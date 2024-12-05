@@ -6,11 +6,12 @@ public class PlayerControllerScript : MonoBehaviour // Inheriting from MonoBehav
 {
     // Header attribute for organizing the Inspector UI in Unity.
     [Header("Movement Settings")]
-    [SerializeField] private float walkSpeed = 5f; // Speed when walking, adjustable in Inspector.
-    [SerializeField] private float jumpSpeed = 10f; // Vertical speed applied when the player jumps.
-    [SerializeField] private float fallSpeed = 20f; // Maximum speed at which the player can fall.
+    [SerializeField] private float walkSpeed = 7f; // Speed when walking, adjustable in Inspector.
+    [SerializeField] private float jumpSpeed = 80f; // Vertical speed applied when the player jumps.
+    [SerializeField] private float fallSpeed = 18f; // Maximum speed at which the player can fall.
     [SerializeField] private int maxJumpSteps = 2; // Maximum number of jumps the player can perform.
     [SerializeField] private float timeBetweenAttacks = 0.5f; // Cooldown time between attacks.
+    [SerializeField] private Rigidbody2D rigidBody;
 
     [Header("Ground and Roof Checks")]
     [SerializeField] private Transform groundCheck; // Transform to determine the player's ground position.
@@ -20,6 +21,7 @@ public class PlayerControllerScript : MonoBehaviour // Inheriting from MonoBehav
     private Rigidbody2D rb; // Rigidbody2D component for physics interactions.
     private float xAxis; // Variable to store horizontal input from the player.
     private bool isJumping; // Boolean to check if the player has initiated a jump.
+    private bool wasJumping; // Was player jumping last frame?
     private int jumpSteps; // Counter for the number of jumps performed.
     private float timeSinceLastAttack; // Timer for tracking attack cooldown.
     private bool isAttacking; // Boolean to check if the player is currently attacking.
@@ -43,7 +45,8 @@ public class PlayerControllerScript : MonoBehaviour // Inheriting from MonoBehav
     private void GetInputs()
     {
         xAxis = Input.GetAxis("Horizontal"); // Get horizontal input (A/D or Left/Right arrows).
-        isJumping = Input.GetButtonDown("Jump"); // Check if the jump button is pressed.
+        isJumping = Input.GetButton("Jump"); // Check if the jump button is pressed.
+        
 
         // Check if the attack button is pressed and the player is not currently attacking.
         if (Input.GetButtonDown("Attack") && !isAttacking)
@@ -66,7 +69,8 @@ public class PlayerControllerScript : MonoBehaviour // Inheriting from MonoBehav
     // Method to handle player jumping logic.
     private void HandleJump()
     {
-        if (Grounded() && jumpSteps < maxJumpSteps) // Check if the player is grounded and can jump.
+        Debug.Log(isJumping);
+        if (Grounded() && jumpSteps < maxJumpSteps && !wasJumping) // Check if the player is grounded and can jump.
         {
             if (isJumping) // If the player initiated a jump.
             {
@@ -75,11 +79,21 @@ public class PlayerControllerScript : MonoBehaviour // Inheriting from MonoBehav
             }
         }
 
+        if (isJumping && wasJumping)
+        {
+            rigidBody.gravityScale = 3;
+        } else
+        {
+            rigidBody.gravityScale = 6;
+        }
+
         // Limit the maximum falling speed to prevent unrealistic falls.
         if (rb.velocity.y < -fallSpeed)
         {
             rb.velocity = new Vector2(rb.velocity.x, -fallSpeed); // Clamp the vertical velocity to the fall speed.
         }
+
+        wasJumping = isJumping;
     }
 
     // Method to handle player attack logic.
@@ -102,11 +116,11 @@ public class PlayerControllerScript : MonoBehaviour // Inheriting from MonoBehav
         // Check horizontal input to determine facing direction.
         if (xAxis > 0) // If moving right.
         {
-            transform.localScale = new Vector3(1, 1, 1); // Face right.
+            transform.localScale = new Vector3(1, 1.5f, 1); // Face right.
         }
         else if (xAxis < 0) // If moving left.
         {
-            transform.localScale = new Vector3(-1, 1, 1); // Face left.
+            transform.localScale = new Vector3(-1, 1.5f, 1); // Face left.
         }
     }
 
@@ -133,4 +147,6 @@ public class PlayerControllerScript : MonoBehaviour // Inheriting from MonoBehav
             jumpSteps = 0; // Reset jump counter to allow jumping again.
         }
     }
+
+    public bool IsJumping() { return isJumping; }
 }
