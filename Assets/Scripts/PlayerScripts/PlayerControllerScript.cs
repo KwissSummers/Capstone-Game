@@ -13,12 +13,17 @@ public class PlayerControllerScript : MonoBehaviour // Inheriting from MonoBehav
     [SerializeField] private float timeBetweenAttacks = 0.5f; // Cooldown time between attacks.
     [SerializeField] private Rigidbody2D rigidBody;
 
+    private float camSmoothSpeed = 0.1f;
+    private Vector3 velocity = Vector3.zero;
+
     [Header("Ground and Roof Checks")]
     [SerializeField] private Transform groundCheck; // Transform to determine the player's ground position.
     [SerializeField] private Transform roofCheck; // Transform to determine the player's roof position.
     [SerializeField] private LayerMask groundLayer; // Layer mask to identify ground objects for collision detection.
 
     private Rigidbody2D rb; // Rigidbody2D component for physics interactions.
+    private Camera camera;
+    private GameObject player;
     private float xAxis; // Variable to store horizontal input from the player.
     private bool isJumping; // Boolean to check if the player has initiated a jump.
     private bool wasJumping; // Was player jumping last frame?
@@ -30,6 +35,8 @@ public class PlayerControllerScript : MonoBehaviour // Inheriting from MonoBehav
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>(); // Get the Rigidbody2D component attached to this GameObject.
+        camera = Camera.main;
+        player = GameObject.FindWithTag("Player");
     }
 
     // Called once per frame.
@@ -39,6 +46,20 @@ public class PlayerControllerScript : MonoBehaviour // Inheriting from MonoBehav
         HandleMovement(); // Process movement logic.
         HandleJump(); // Process jump logic.
         HandleAttack(); // Process attack logic.
+
+
+        //camera.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, camera.transform.position.z) + new Vector3(0,2,0);
+    }
+
+    private void LateUpdate()
+    {
+
+        camera.transform.position = Vector3.SmoothDamp(
+            camera.transform.position,
+            new Vector3(player.transform.position.x, player.transform.position.y, camera.transform.position.z) + new Vector3(0, 1, 0),
+            ref velocity,
+            camSmoothSpeed
+        );
     }
 
     // Method to gather player input.
@@ -70,9 +91,9 @@ public class PlayerControllerScript : MonoBehaviour // Inheriting from MonoBehav
     private void HandleJump()
     {
         Debug.Log(isJumping);
-        if (Grounded() && jumpSteps < maxJumpSteps && !wasJumping) // Check if the player is grounded and can jump.
+        if (jumpSteps < maxJumpSteps) // Check if the player is grounded and can jump.
         {
-            if (isJumping) // If the player initiated a jump.
+            if (isJumping && !wasJumping) // If the player initiated a jump.
             {
                 rb.velocity = new Vector2(rb.velocity.x, jumpSpeed); // Apply jump speed to vertical velocity.
                 jumpSteps++; // Increment jump count.
@@ -145,6 +166,7 @@ public class PlayerControllerScript : MonoBehaviour // Inheriting from MonoBehav
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground")) // Check if collided with ground layer.
         {
             jumpSteps = 0; // Reset jump counter to allow jumping again.
+            wasJumping = false;
         }
     }
 
