@@ -9,7 +9,7 @@ public class StaminaManager : MonoBehaviour
     [Header("Stamina Settings")]
     [SerializeField] public float stamina = 100;
     [SerializeField] public float maxStamina = 100;
-    [SerializeField] public float staminaRegen = 5f; // Amount of stamina regenerated per second
+    [SerializeField] public float staminaRegen = 2f; // Amount of stamina regenerated per second
     [SerializeField] public Image staminaBar; // UI stamina bar
 
     private void Start()
