@@ -9,15 +9,16 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float walkSpeed = 7f; // Base walk speed
-    public float jumpSpeed = 80f; // Jump speed
-    public float maxJumpHeightMultiplier = 2f; // Maximum jump height multiplier 
-    public float fallSpeed = 18f; // Maximum fall speed
+    
+
+    public float jumpSpeed = 18f; // Jump speed
+    public float fallSpeed = 20f; // Maximum fall speed
     public int maxJumpSteps = 2; // Max number of jumps
     public float dashSpeed = 20f; // Speed of the dash
     public float dashCooldown = 0.5f; // Cooldown between dashes
     public float dashDuration = 0.5f; // Duration of the dash
     public int maxDashes = 2; // Max number of dashes allowed
-    private float jumpHoldTime = 0f; // Duration the spacebar has been held down.
+    public float freefallGravScale = 8f;
     private bool isAtMaxHeight; // Whether the player has reached the maximum jump height.
     private bool isJumpingHeld = false; // To track if the player is holding the jump button.
 
@@ -56,10 +57,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        GetInputs();
-        HandleMovement();
-        HandleJump();
-        HandleDash(); // Handle dashing
+        GetInputs(); // Input management
+        HandleMovement(); // Movement, dashing and jumping updates
     }
 
     private void LateUpdate()
@@ -78,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
         isJumping = Input.GetButton("Jump");
 
         // Check if the 'C' key is pressed and the player can dash (dashesRemaining > 0 and dashCooldownTimer <= 0)
-        if (Input.GetKeyDown(KeyCode.C) && dashesRemaining > 0 && dashCooldownTimer <= 0)
+        if (!isDashing && Input.GetKeyDown(KeyCode.C) && dashesRemaining > 0 && dashCooldownTimer <= 0)
         {
             isDashing = true;
         }
@@ -95,6 +94,9 @@ public class PlayerMovement : MonoBehaviour
         {
             ApplyRecoilX(); // Apply recoil during recoil state
         }
+
+        HandleJump(); // Handle jumps
+        HandleDash(); // Handle dashing
     }
 
     private void ApplyRecoilX()
@@ -122,43 +124,26 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleJump()
     {
-        if (jumpSteps < maxJumpSteps)
+        if (!isDashing)
         {
-            if (isJumping && !wasJumping) // The space bar is initially pressed down, initiate the jump.
+            if (jumpSteps < maxJumpSteps && (isJumping && !wasJumping))
             {
-                jumpHoldTime = 0f; // Reset jump hold time on new jump
-                isAtMaxHeight = false; // Reset the max height flag
+                 // The space bar is initially pressed down, initiate the jump.
                 rb.velocity = new Vector2(rb.velocity.x, jumpSpeed); // Apply the initial jump speed
+                SetGravityScale(5f);
                 jumpSteps++; // Increment the jump step counter.
             }
 
-            if (isJumping && !isAtMaxHeight) // The space bar is held down and we haven’t reached max height yet.
+
+            if (!isJumping)
             {
-                jumpHoldTime += Time.deltaTime; // Increase the hold time.
-                float maxJumpHeight = jumpSpeed * maxJumpHeightMultiplier; // Calculate the max jump height.
-                float currentJumpSpeed = Mathf.Lerp(jumpSpeed, maxJumpHeight, jumpHoldTime); // Gradually increase jump speed.
-
-                if (rb.velocity.y < currentJumpSpeed) // Only increase the jump speed until the max height is reached.
-                {
-                    rb.velocity = new Vector2(rb.velocity.x, currentJumpSpeed); // Apply the updated jump speed.
-                }
-
-                if (rb.velocity.y >= maxJumpHeight) // Once the max jump height is reached, stop increasing speed.
-                {
-                    isAtMaxHeight = true; // Set the flag to true to stop increasing the jump height.
-                    rb.velocity = new Vector2(rb.velocity.x, maxJumpHeight); // Ensure we cap the velocity at max height.
-                }
+                SetGravityScale(freefallGravScale);
+            } else if (isJumping)
+            {
+                SetGravityScale(5f);
             }
         }
 
-        // As soon as the player releases the jump button or the max height is reached, gravity applies.
-        if (!isJumping || isAtMaxHeight)
-        {
-            if (rb.velocity.y > 0) // Apply gravity only if the player is still going up.
-            {
-                rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - (fallSpeed * Time.deltaTime)); // Apply fall speed.
-            }
-        }
 
         // Handle gravity and fall speed
         if (rb.velocity.y < -fallSpeed)
@@ -184,15 +169,12 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator Dash()
     {
-        isDashing = true;
-        float originalGravity = rigidBody.gravityScale;
-        rigidBody.gravityScale = 0; // Disable gravity during dash
+        SetGravityScale(0); // Disable gravity during dash
         Vector2 dashDirection = new Vector2(xAxis, 0).normalized;
         rb.velocity = dashDirection * dashSpeed;
 
         yield return new WaitForSeconds(dashDuration);
 
-        rigidBody.gravityScale = originalGravity;
         isDashing = false;
         dashesRemaining--;
         dashCooldownTimer = dashCooldown;
@@ -224,6 +206,14 @@ public class PlayerMovement : MonoBehaviour
         return Physics2D.Raycast(roofCheck.position, Vector2.up, 0.1f, groundLayer);
     }
 
+    public bool IsJumping() { return isJumping; }
+
+
+    private void SetGravityScale(float scale)
+    {
+        rigidBody.gravityScale = scale;
+    }
+ 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
@@ -233,5 +223,4 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public bool IsJumping() { return isJumping; }
 }
