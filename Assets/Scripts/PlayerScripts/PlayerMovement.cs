@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     public float freefallGravScale = 8f;
     private bool isAtMaxHeight; // Whether the player has reached the maximum jump height.
     private bool isJumpingHeld = false; // To track if the player is holding the jump button.
+    private bool facingLeft = false; // Is the player facing left
 
     [SerializeField] private Rigidbody2D rigidBody;
 
@@ -74,6 +75,14 @@ public class PlayerMovement : MonoBehaviour
     private void GetInputs()
     {
         xAxis = Input.GetAxis("Horizontal");
+        if(xAxis > 0)
+        {
+            facingLeft = false;
+        }
+        else if(xAxis < 0)
+        {
+            facingLeft = true;
+        }
         isJumping = Input.GetButton("Jump");
 
         // Check if the 'C' key is pressed and the player can dash (dashesRemaining > 0 and dashCooldownTimer <= 0)
@@ -170,7 +179,7 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator Dash()
     {
         SetGravityScale(0); // Disable gravity during dash
-        Vector2 dashDirection = new Vector2(xAxis, 0).normalized;
+        Vector2 dashDirection = facingLeft ? Vector2.left : Vector2.right;
         rb.velocity = dashDirection * dashSpeed;
 
         yield return new WaitForSeconds(dashDuration);
