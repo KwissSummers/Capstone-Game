@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class PlayerAttackManager : MonoBehaviour
 {
+    /*
     [Header("Attack Prefabs")]
     [SerializeField] private GameObject basicAttackPrefab;
     [SerializeField] private GameObject heavyAttackPrefab;
@@ -15,6 +16,10 @@ public class PlayerAttackManager : MonoBehaviour
     [SerializeField] private GameObject downwardSlashPrefab;
     [SerializeField] private GameObject rangedAttackPrefab;
     [SerializeField] private GameObject parryEffectPrefab; // Visual effect for successful parry.
+    */
+
+    //[Header("Attack Objects")]
+    [SerializeField] private List<GameObject> abilityList; // Add all your attack objects to this list
 
     // Recoil variables
     [SerializeField] private float recoilXSpeed = 45f; // Horizontal recoil speed
@@ -48,29 +53,33 @@ public class PlayerAttackManager : MonoBehaviour
         if (isAttacking || Time.time < lastAttackTime + attackCD)
             return; // Exit if on cooldown or already attacking
 
-        if (Input.GetButtonDown("BasicAttack"))
+        
+        // GetKeyDown is for when a key is pressed
+        // GetKey is for when a key is held
+        if (Input.GetKeyDown(KeyCode.G)) // Set to actual input
         {
-            StartCoroutine(ExecuteAttack(basicAttackPrefab, 20));
+            Instantiate(abilityList[0]);
+            //StartCoroutine(ExecuteAttack(basicAttackPrefab, 20));
         }
         else if (Input.GetButtonDown("HeavyAttack"))
         {
-            StartCoroutine(ExecuteAttack(heavyAttackPrefab, 70));
+            //StartCoroutine(ExecuteAttack(heavyAttackPrefab, 70));
         }
         else if (Input.GetButtonDown("RangedAttack"))
         {
-            StartCoroutine(ExecuteAttack(rangedAttackPrefab, 50));
+            //StartCoroutine(ExecuteAttack(rangedAttackPrefab, 50));
         }
         else if (Input.GetButtonDown("DashAttack"))
         {
-            StartCoroutine(ExecuteAttack(dashAttackPrefab, 25));
+            //StartCoroutine(ExecuteAttack(dashAttackPrefab, 25));
         }
         else if (Input.GetButtonDown("UpwardSlash"))
         {
-            StartCoroutine(ExecuteAttack(upwardSlashPrefab, 20));
+            //StartCoroutine(ExecuteAttack(upwardSlashPrefab, 20));
         }
         else if (Input.GetButtonDown("DownwardSlash"))
         {
-            StartCoroutine(ExecuteAttack(downwardSlashPrefab, 20));
+            //StartCoroutine(ExecuteAttack(downwardSlashPrefab, 20));
         }
         else if (Input.GetButtonDown("Parry"))
         {
