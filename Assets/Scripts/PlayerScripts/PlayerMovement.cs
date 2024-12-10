@@ -179,7 +179,7 @@ public class PlayerMovement : MonoBehaviour
                 SetGravityScale(freefallGravScale);
             } else if (isJumping)
             {
-                SetGravityScale(5f);
+                SetGravityScale(7f);
             }
         }
 
