@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
 
     private Rigidbody2D rb;
-    private new Camera camera;
+    //private new Camera camera;
     private GameObject player;
 
     private float xAxis; // Horizontal input axis
@@ -55,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        camera = Camera.main;
+        //camera = Camera.main;
         player = GameObject.FindWithTag("Player");
         dashesRemaining = maxDashes; // Initialize dash count
     }
@@ -70,15 +70,15 @@ public class PlayerMovement : MonoBehaviour
         HandleMovement(); // Movement, dashing and jumping updates
     }
 
-    private void LateUpdate()
-    {
-        camera.transform.position = Vector3.SmoothDamp(
-            camera.transform.position,
-            new Vector3(player.transform.position.x, player.transform.position.y, camera.transform.position.z) + new Vector3(0, 1, 0),
-            ref velocity,
-            camSmoothSpeed
-        );
-    }
+    //private void LateUpdate()
+    //{
+    //    camera.transform.position = Vector3.SmoothDamp(
+    //        camera.transform.position,
+    //        new Vector3(player.transform.position.x, player.transform.position.y, camera.transform.position.z) + new Vector3(0, 1, 0),
+    //        ref velocity,
+    //        camSmoothSpeed
+    //    );
+    //}
 
     private void GetInputs()
     {
