@@ -84,12 +84,6 @@ public class PlayerAttackManager : MonoBehaviour
         // Spawn the ability prefab at the calculated position
         GameObject attack = Instantiate(ability.attackPrefab, attackPosition, Quaternion.identity);
 
-        // Set lifespan
-        Destroy(attack, ability.lifespan);
-
-        // Apply recoil or other mechanics here
-        ApplyRecoil((int)ability.damage);
-
         yield return new WaitForSeconds(ability.cooldown);
 
         isAttacking = false;
