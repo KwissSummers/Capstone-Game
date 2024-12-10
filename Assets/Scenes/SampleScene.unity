@@ -1127,6 +1127,7 @@ MonoBehaviour:
   dashDuration: 0.4
   maxDashes: 2
   freefallGravScale: 9
+  facingLeft: 0
   rigidBody: {fileID: 1333216835}
   groundCheck: {fileID: 437955389}
   roofCheck: {fileID: 1166377920}
@@ -1330,6 +1331,7 @@ MonoBehaviour:
   recoilYSpeed: 45
   attackCD: 0.5
   parryCost: 10
+  attackSpawnPos: {fileID: 1126178330}
   isAttacking: 0
 --- !u!1 &1665811610
 GameObject:

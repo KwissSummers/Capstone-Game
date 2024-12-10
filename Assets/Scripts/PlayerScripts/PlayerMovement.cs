@@ -25,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
     public float freefallGravScale = 8f;
     private bool isAtMaxHeight; // Whether the player has reached the maximum jump height.
     private bool isJumpingHeld = false; // To track if the player is holding the jump button.
-    private bool facingLeft = false; // Is the player facing left
+    public bool facingLeft = false; // Is the player facing left
 
     [SerializeField] private Rigidbody2D rigidBody;
 

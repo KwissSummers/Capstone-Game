@@ -17,3 +17,4 @@ MonoBehaviour:
   cooldown: 0.4
   lifespan: 0.1
   speed: 5
+  spawnDistance: 1

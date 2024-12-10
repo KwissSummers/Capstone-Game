@@ -31,14 +31,17 @@ public class PlayerAttackManager : MonoBehaviour
     [Header("Attack Settings")]
     [SerializeField] private float attackCD = 0.5f; // Cooldown between attacks
     [SerializeField] private int parryCost = 10; // Stamina cost for parrying.
+    [SerializeField] private Transform attackSpawnPos;
     private bool isParrying;
     private float lastAttackTime; // Tracks the time of the last attack
     public bool isAttacking; // Tracks if the player is currently attacking
 
+    private PlayerMovement playerMovement;
     private StaminaManager staminaManager; // Reference to the player's stamina manager
 
     private void Start()
     {
+        playerMovement = GetComponent<PlayerMovement>();
         // Find the player's stamina manager on the same GameObject
         staminaManager = GetComponent<StaminaManager>();
     }
@@ -74,15 +77,22 @@ public class PlayerAttackManager : MonoBehaviour
         lastAttackTime = Time.time;
 
         // Calculate the spawn position with offset based on the player's direction
-        Vector3 offset = new Vector3(ability.spawnDistance, 0, 0);
-        if (transform.localScale.x < 0) // Check the player's facing direction
-        {
-            offset.x = -offset.x; // Reverse offset if player is facing left
-        }
-        Vector3 attackPosition = transform.position + offset;
+        //Vector3 offset = new Vector3(ability.spawnDistance, 0, 0);
+        //if (transform.localScale.x < 0) // Check the player's facing direction
+        //{
+        //    offset.x = -offset.x; // Reverse offset if player is facing left
+        //}
+        //Vector3 attackPosition = transform.position + offset;
 
         // Spawn the ability prefab at the calculated position
-        GameObject attack = Instantiate(ability.attackPrefab, attackPosition, Quaternion.identity);
+        if (playerMovement.facingLeft)
+        {
+            GameObject attack = Instantiate(ability.attackPrefab, attackSpawnPos.position, Quaternion.AngleAxis(90, new Vector3(0,0,1)));
+        }
+        else
+        {
+            GameObject attack = Instantiate(ability.attackPrefab, attackSpawnPos.position, Quaternion.identity);
+        }
 
         yield return new WaitForSeconds(ability.cooldown);
 

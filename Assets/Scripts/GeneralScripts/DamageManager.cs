@@ -20,7 +20,7 @@ public class DamageManager : MonoBehaviour
 
     void Update()
     {
-        transform.position += direction * ability.speed * Time.deltaTime;
+        transform.Translate(direction * ability.speed * Time.deltaTime);
     }
 
     private void OnCollisionEnter2D(Collision2D other)
