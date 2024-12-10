@@ -1,15 +1,17 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BossController : MonoBehaviour
 {
     [Header("Health and States")]
-    [SerializeField] public int maxHealth = 1000;
+    [SerializeField] public float maxHealth = 1000;
     [SerializeField] public float staggerDuration = 3.0f;
     [SerializeField] public float bossSpeed = 5.0f;
     [SerializeField] private float currentHealth;
+
+    public float CurrentHealth => currentHealth;
+    public float MaxHealth => maxHealth;
 
     private bool isStaggered;
     private bool isShielded;
@@ -163,7 +165,7 @@ public class BossController : MonoBehaviour
         if (currentHealth <= 0)
         {
             Debug.Log("Boss defeated!");
-            Destroy(gameObject);
+            Destroy(gameObject); // Destroy the boss if health is 0 or below
             return;
         }
 

@@ -9,7 +9,11 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float walkSpeed = 7f; // Base walk speed
-    
+    public float maxSpeedMultiplier = 1.5f; // Max speed multiplier
+    public float speedIncreaseTime = 2f; // Time to maintain direction before speed increases
+    private float currentSpeed; // Current speed based on time walking in the same direction
+    private float timeWalkingInDirection = 0f; // Time spent walking in the same direction
+    private float lastXAxis = 0f; // Last horizontal input to detect direction change
 
     public float jumpSpeed = 18f; // Jump speed
     public float fallSpeed = 20f; // Maximum fall speed
@@ -59,6 +63,10 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         GetInputs(); // Input management
+    }
+
+    private void FixedUpdate()
+    {
         HandleMovement(); // Movement, dashing and jumping updates
     }
 
@@ -96,7 +104,24 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isDashing && !recoilingX) // Prevent movement during dashing or recoiling
         {
-            rb.velocity = new Vector2(xAxis * walkSpeed, rb.velocity.y);
+            // Check if the player has been walking in the same direction long enough
+            if (Mathf.Abs(xAxis) > 0)
+            {
+                timeWalkingInDirection += Time.deltaTime; // Increment time walking in direction
+
+                // Gradually increase speed over time
+                if (timeWalkingInDirection >= speedIncreaseTime)
+                {
+                    currentSpeed = Mathf.Lerp(walkSpeed, walkSpeed * maxSpeedMultiplier, (timeWalkingInDirection - speedIncreaseTime) / speedIncreaseTime);
+                }
+            }
+            else
+            {
+                ResetSpeed(); // Reset speed if the player is not moving
+            }
+
+            // Apply movement with the current speed
+            rb.velocity = new Vector2(xAxis * currentSpeed, rb.velocity.y);
             Flip();
         }
         else if (recoilingX)
@@ -130,7 +155,12 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(recoilDuration);
         recoilingX = false; // Stop recoil after duration
     }
-
+    private void ResetSpeed()
+    {
+        // Reset the current speed to the original walkSpeed
+        currentSpeed = walkSpeed;
+        timeWalkingInDirection = 0f; // Reset the time spent walking in the same direction
+    }
     private void HandleJump()
     {
         if (!isDashing)
