@@ -25,16 +25,35 @@ public class DamageManager : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        // Reduce health of collided object if it has HealthManager
+        bool isVulnerable = false;
+
+        // Check if the object is "vulnerable" by tag 
+        if (other.gameObject.CompareTag("Vulnerable"))
+        {
+            isVulnerable = true;
+        }
+
+        // Reduce health if the object has a HealthManager
         if (other.gameObject.TryGetComponent(out HealthManager healthManager))
         {
             healthManager.currentHealth -= ability.damage;
             Debug.Log($"Dealt {ability.damage} damage to {other.gameObject.name}");
         }
 
+        // Trigger recoil only if the object is vulnerable
+        if (isVulnerable)
+        {
+            PlayerAttackManager player = FindObjectOfType<PlayerAttackManager>(); // Get reference to PlayerAttackManager
+            if (player != null)
+            {
+                player.TriggerRecoil(ability.damage); // Trigger recoil
+            }
+        }
+
         // Destroy the damage instance on collision
         Destroy(gameObject);
     }
+
 
     public void SetDamage(int value)
     {
@@ -45,4 +64,5 @@ public class DamageManager : MonoBehaviour
     {
         direction = dir; // Allow direction to be modified
     }
+
 }

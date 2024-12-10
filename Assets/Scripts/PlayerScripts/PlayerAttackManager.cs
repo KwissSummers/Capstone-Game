@@ -18,12 +18,12 @@ public class PlayerAttackManager : MonoBehaviour
     [SerializeField] private GameObject parryEffectPrefab; // Visual effect for successful parry.
     */
 
-    //[Header("Attack Objects")]
-    [SerializeField] private List<GameObject> abilityList; // Add all your attack objects to this list
+    [Header("Attack Objects")]
+    [SerializeField] private List<Ability> abilityList; // Add all your attack objects to this list
 
     // Recoil variables
-    [SerializeField] private float recoilXSpeed = 45f; // Horizontal recoil speed
-    [SerializeField] private float recoilYSpeed = 45f; // Vertical recoil speed
+    [SerializeField] private float recoilXSpeed = 25f; // Horizontal recoil speed
+    [SerializeField] private float recoilYSpeed = 25f; // Vertical recoil speed
     private bool isRecoilingX = false;
     private bool isRecoilingY = false;
     private Vector2 recoilDirection = Vector2.zero; // To store direction of recoil
@@ -51,71 +51,62 @@ public class PlayerAttackManager : MonoBehaviour
     private void PerformAttack()
     {
         if (isAttacking || Time.time < lastAttackTime + attackCD)
-            return; // Exit if on cooldown or already attacking
+            return;
 
-        
-        // GetKeyDown is for when a key is pressed
-        // GetKey is for when a key is held
-        if (Input.GetKeyDown(KeyCode.G)) // Set to actual input
+        if (Input.GetKeyDown(KeyCode.G)) // Example input for ability 0
         {
-            Instantiate(abilityList[0]);
-            //StartCoroutine(ExecuteAttack(basicAttackPrefab, 20));
-        }
-        else if (Input.GetButtonDown("HeavyAttack"))
-        {
-            //StartCoroutine(ExecuteAttack(heavyAttackPrefab, 70));
-        }
-        else if (Input.GetButtonDown("RangedAttack"))
-        {
-            //StartCoroutine(ExecuteAttack(rangedAttackPrefab, 50));
-        }
-        else if (Input.GetButtonDown("DashAttack"))
-        {
-            //StartCoroutine(ExecuteAttack(dashAttackPrefab, 25));
-        }
-        else if (Input.GetButtonDown("UpwardSlash"))
-        {
-            //StartCoroutine(ExecuteAttack(upwardSlashPrefab, 20));
-        }
-        else if (Input.GetButtonDown("DownwardSlash"))
-        {
-            //StartCoroutine(ExecuteAttack(downwardSlashPrefab, 20));
-        }
-        else if (Input.GetButtonDown("Parry"))
-        {
-            PerformParry();
+            UseAbility(0);
         }
     }
 
-    private IEnumerator ExecuteAttack(GameObject attackPrefab, int damage)
+    private void UseAbility(int index)
+    {
+        if (index < 0 || index >= abilityList.Count) return;
+
+        Ability ability = abilityList[index];
+        StartCoroutine(ExecuteAttack(ability));
+    }
+
+
+    private IEnumerator ExecuteAttack(Ability ability)
     {
         isAttacking = true;
         lastAttackTime = Time.time;
 
-        // Spawn the damage instance
-        Vector3 attackPosition = transform.position + new Vector3(1, 0, 0) * transform.localScale.x;
-        GameObject attack = Instantiate(attackPrefab, attackPosition, Quaternion.identity);
-        attack.GetComponent<DamageManager>().SetDamage(damage);
+        // Calculate the spawn position with offset based on the player's direction
+        Vector3 offset = new Vector3(ability.spawnDistance, 0, 0);
+        if (transform.localScale.x < 0) // Check the player's facing direction
+        {
+            offset.x = -offset.x; // Reverse offset if player is facing left
+        }
+        Vector3 attackPosition = transform.position + offset;
 
-        // Apply recoil after attack based on attack type
-        ApplyRecoil(damage);
+        // Spawn the ability prefab at the calculated position
+        GameObject attack = Instantiate(ability.attackPrefab, attackPosition, Quaternion.identity);
 
-        // Wait for attack cooldown
-        yield return new WaitForSeconds(attackCD);
+        // Set lifespan
+        Destroy(attack, ability.lifespan);
+
+        // Apply recoil or other mechanics here
+        ApplyRecoil((int)ability.damage);
+
+        yield return new WaitForSeconds(ability.cooldown);
 
         isAttacking = false;
     }
 
-    private void ApplyRecoil(int attackDamage)
+
+
+    public void ApplyRecoil(float damage)
     {
         // Apply recoil direction based on attack type (horizontal or vertical)
-        if (attackDamage >= 50) // For heavy attacks, apply a strong recoil
+        if (damage >= 50) // For heavy attacks, apply a strong recoil
         {
-            recoilDirection = new Vector2(transform.localScale.x * -1, 0); // Horizontal recoil
+            recoilDirection = new Vector2(transform.localScale.x * -0.5f, 0); // Horizontal recoil
         }
-        else if (attackDamage < 50 && attackDamage >= 20) // For lighter attacks
+        else if (damage < 50 && damage >= 20) // For lighter attacks
         {
-            recoilDirection = new Vector2(transform.localScale.x * -0.5f, 0); // Lighter horizontal recoil
+            recoilDirection = new Vector2(transform.localScale.x * -0.25f, 0); // Lighter horizontal recoil
         }
 
         // Activate recoil effects
@@ -123,7 +114,7 @@ public class PlayerAttackManager : MonoBehaviour
         StartCoroutine(RecoilX());
 
         // If it's a vertical attack, apply vertical recoil
-        if (attackDamage == 70) // Example for up attack
+        if (damage == 70) // Example for up attack
         {
             isRecoilingY = true;
             StartCoroutine(RecoilY());
@@ -132,7 +123,7 @@ public class PlayerAttackManager : MonoBehaviour
 
     private IEnumerator RecoilX()
     {
-        float recoilTime = 0.5f; // How long the recoil lasts
+        float recoilTime = 0.25f; // How long the recoil lasts
         float elapsedTime = 0f;
 
         while (elapsedTime < recoilTime)
@@ -198,4 +189,14 @@ public class PlayerAttackManager : MonoBehaviour
         isRecoilingX = true;
         StartCoroutine(RecoilX());
     }
+
+    public void TriggerRecoil(float damage)
+    {
+        // Only apply recoil if the damage is above a threshold or if the attack hit something
+        if (damage > 0)
+        {
+            ApplyRecoil(damage);  // Apply recoil based on attack damage
+        }
+    }
+
 }
