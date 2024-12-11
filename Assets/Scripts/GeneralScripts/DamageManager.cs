@@ -1,26 +1,54 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DamageManager : MonoBehaviour
 {
-    //[SerializeField] private int damage; // Damage dealt by this instance
-    //[SerializeField] private float lifespan = 0.5f; // Time before destruction
-    //[SerializeField] private float speed = 5f; // Movement speed for damage instances
-    [SerializeField] private Ability ability;
-
+    [SerializeField] private Ability.AbilityPhase currentPhase; // Reference to the current phase of the ability
+    private BoxCollider2D hitbox;
     private Vector3 direction; // Direction of movement
 
-    void Start()
+    private void Awake()
     {
-        Destroy(gameObject, ability.lifespan); // Destroy automatically after lifespan
-        direction = transform.right; // Default direction
+        hitbox = GetComponent<BoxCollider2D>();
+        if (hitbox == null)
+        {
+            hitbox = gameObject.AddComponent<BoxCollider2D>();
+        }
     }
 
-    void Update()
+    private void Start()
     {
-        transform.Translate(direction * ability.speed * Time.deltaTime);
+        if (currentPhase != null)
+        {
+            // Destroy automatically after the phase duration
+            Destroy(gameObject, currentPhase.phaseDuration);
+
+            // Default movement direction
+            direction = transform.right;
+        }
+        else
+        {
+            Debug.LogError("DamageManager: Current phase is not set. DamageManager will not function properly.");
+        }
+    }
+
+    private void Update()
+    {
+        if (currentPhase != null)
+        {
+            // Move the damage instance according to the phase speed
+            transform.Translate(direction * currentPhase.damageAmount * Time.deltaTime);
+        }
+    }
+
+    public void SetHitbox(Vector2 size, Vector3 offset)
+    {
+        if (hitbox != null)
+        {
+            hitbox.size = size;
+            hitbox.offset = offset;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -33,20 +61,39 @@ public class DamageManager : MonoBehaviour
             isVulnerable = true;
         }
 
-        // Reduce health if the object has a HealthManager
+        // Apply damage if the object has a HealthManager or is the Boss
         if (other.gameObject.TryGetComponent(out HealthManager healthManager))
         {
-            healthManager.currentHealth -= ability.damage;
-            Debug.Log($"Dealt {ability.damage} damage to {other.gameObject.name}");
+            healthManager.currentHealth -= currentPhase.damageAmount;
+            Debug.Log($"Dealt {currentPhase.damageAmount} damage to {other.gameObject.name}");
+        }
+        else if (other.gameObject.TryGetComponent(out BossController bossController))
+        {
+            if (bossController.CurrentHealth > 0)
+            {
+                if (bossController.isShielded)
+                {
+                    Debug.Log("Attack blocked! The boss is shielded.");
+                }
+                else
+                {
+                    bossController.TakeDamage(currentPhase.damageAmount);
+
+                    if (isVulnerable && currentPhase.damageAmount >= 50) // Stagger on high damage
+                    {
+                        bossController.TriggerStagger();
+                    }
+                }
+            }
         }
 
-        // Trigger recoil only if the object is vulnerable
+        // Trigger recoil if the object is vulnerable
         if (isVulnerable)
         {
-            PlayerAttackManager player = FindObjectOfType<PlayerAttackManager>(); // Get reference to PlayerAttackManager
+            PlayerAttackManager player = FindObjectOfType<PlayerAttackManager>();
             if (player != null)
             {
-                player.TriggerRecoil(ability.damage); // Trigger recoil
+                player.TriggerRecoil(currentPhase.damageAmount);
             }
         }
 
@@ -54,15 +101,13 @@ public class DamageManager : MonoBehaviour
         Destroy(gameObject);
     }
 
-
-    public void SetDamage(int value)
+    public void SetPhase(Ability.AbilityPhase phase)
     {
-        ability.damage = value; // Allow damage to be set dynamically
+        currentPhase = phase; // Assign the current phase for this damage instance
     }
 
     public void SetDirection(Vector3 dir)
     {
         direction = dir; // Allow direction to be modified
     }
-
 }
