@@ -87,6 +87,13 @@ public class HealthManager : MonoBehaviour
         isInvincible = false;
     }
 
+    public void Heal(float amount)
+    {
+        currentHealth += amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        Debug.Log($"Player healed for {amount}. Current health: {currentHealth}");
+    }
+
     private void HandleDeath()
     {
         Debug.Log("Player has died!");

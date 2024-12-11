@@ -110,4 +110,15 @@ public class DamageManager : MonoBehaviour
     {
         direction = dir; // Allow direction to be modified
     }
+
+    public void ApplyRecoilToEnemy(Vector2 direction, float recoilForce)
+    {
+        // Check if the enemy has a Rigidbody2D to apply force to
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.AddForce(direction * recoilForce, ForceMode2D.Impulse);  // Apply recoil force
+        }
+    }
+
 }

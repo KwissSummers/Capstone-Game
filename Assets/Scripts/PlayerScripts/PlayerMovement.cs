@@ -52,6 +52,8 @@ public class PlayerMovement : MonoBehaviour
     // Recoil variables
     public bool recoilingX = false; // Flag for horizontal recoil
 
+    private float healingTimer = 0f; // To track how long 'D' is held down for healing
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -82,21 +84,32 @@ public class PlayerMovement : MonoBehaviour
 
     private void GetInputs()
     {
-        xAxis = Input.GetAxis("Horizontal");
-        if(xAxis > 0)
-        {
-            facingLeft = false;
-        }
-        else if(xAxis < 0)
-        {
-            facingLeft = true;
-        }
-        isJumping = Input.GetButton("Jump");
+        // Horizontal movement using only left and right arrow keys
+        xAxis = 0f; // Reset horizontal input every frame
+        if (Input.GetKey(KeyCode.LeftArrow)) xAxis = -1f;
+        else if (Input.GetKey(KeyCode.RightArrow)) xAxis = 1f;
 
-        // Check if the 'C' key is pressed and the player can dash (dashesRemaining > 0 and dashCooldownTimer <= 0)
+        // Jump is bound to the Z key
+        isJumping = Input.GetKey(KeyCode.Z);
+
+        // Dash triggered by the 'C' key
         if (!isDashing && Input.GetKeyDown(KeyCode.C) && dashesRemaining > 0 && dashCooldownTimer <= 0)
         {
             isDashing = true;
+        }
+
+        // Healing triggered by holding 'D' for 1.5 seconds
+        if (Input.GetKey(KeyCode.D))
+        {
+            healingTimer += Time.deltaTime;
+            if (healingTimer >= 1.5f)
+            {
+                HealPlayer();
+            }
+        }
+        else
+        {
+            healingTimer = 0f; // Reset the healing timer if the key is released
         }
     }
 
@@ -155,19 +168,21 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(recoilDuration);
         recoilingX = false; // Stop recoil after duration
     }
+
     private void ResetSpeed()
     {
         // Reset the current speed to the original walkSpeed
         currentSpeed = walkSpeed;
         timeWalkingInDirection = 0f; // Reset the time spent walking in the same direction
     }
+
     private void HandleJump()
     {
         if (!isDashing)
         {
             if (jumpSteps < maxJumpSteps && (isJumping && !wasJumping))
             {
-                 // The space bar is initially pressed down, initiate the jump.
+                // The Z key is initially pressed down, initiate the jump.
                 rb.velocity = new Vector2(rb.velocity.x, jumpSpeed); // Apply the initial jump speed
                 SetGravityScale(5f);
                 jumpSteps++; // Increment the jump step counter.
@@ -176,7 +191,8 @@ public class PlayerMovement : MonoBehaviour
             if (!isJumping)
             {
                 SetGravityScale(freefallGravScale);
-            } else if (isJumping)
+            }
+            else if (isJumping)
             {
                 SetGravityScale(7f);
             }
@@ -245,18 +261,29 @@ public class PlayerMovement : MonoBehaviour
 
     public bool IsJumping() { return isJumping; }
 
-
     private void SetGravityScale(float scale)
     {
         rigidBody.gravityScale = scale;
     }
- 
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
             jumpSteps = 0;
             wasJumping = false;
+        }
+    }
+    private void HealPlayer()
+    {
+        // Trigger healing logic
+        HealthManager healthManager = player.GetComponent<HealthManager>();
+        StaminaManager staminaManager = player.GetComponent<StaminaManager>();
+
+        if (staminaManager.UseStamina(25f)) // Ensure 25% stamina is used
+        {
+            healthManager.currentHealth = Mathf.Min(healthManager.currentHealth + 0.25f * healthManager.maxHealth, healthManager.maxHealth);
+            Debug.Log("Player healed 25% HP!");
         }
     }
 }

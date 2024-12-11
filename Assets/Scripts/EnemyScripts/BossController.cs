@@ -226,5 +226,21 @@ public class BossController : MonoBehaviour
         Debug.Log("Boss is shielded!");
     }
 
-   
+    public void ApplyParrySpeedReduction()
+    {
+        bossSpeed /= 2;
+        StartCoroutine(RecoverSpeed(5f)); // Speed will recover after 5 seconds
+        Debug.Log("Boss speed reduced to: " + bossSpeed);
+    }
+
+
+    private IEnumerator RecoverSpeed(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        bossSpeed *= 2;  // Restore the speed back to normal
+        Debug.Log("Boss speed restored to: " + bossSpeed);
+    }
+
+
+
 }
