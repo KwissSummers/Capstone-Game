@@ -90,6 +90,6 @@ public class HealthManager : MonoBehaviour
     private void HandleDeath()
     {
         Debug.Log("Player has died!");
-        Destroy(gameObject); // Optionally trigger death animation or respawn logic
+        //Destroy(gameObject); // Optionally trigger death animation or respawn logic
     }
 }

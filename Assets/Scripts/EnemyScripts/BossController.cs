@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BossController : MonoBehaviour
@@ -16,12 +17,8 @@ public class BossController : MonoBehaviour
     public bool isStaggered;
     public bool isShielded;
 
-    [Header("Attack Settings")]
-    [SerializeField] private GameObject normalAttackPrefab;
-    [SerializeField] private GameObject heavyAttackPrefab;
-    [SerializeField] private GameObject specialAttackPrefab;
-    [SerializeField] private GameObject runningAttackPrefab;
-    [SerializeField] private GameObject rangedAttackPrefab;
+    [Header("Abilities")]
+    [SerializeField] private List<Ability> abilityList;
     [SerializeField] private GameObject shieldingPrefab;
 
     [SerializeField] private float attackCooldown = 2f; // Minimum cooldown between attacks
@@ -82,68 +79,41 @@ public class BossController : MonoBehaviour
 
         if (playerDistance < 3f)
         {
-            PerformNormalAttack();
+            PerformNormalAttack(abilityList[0]);
         }
         else if (playerDistance < 6f)
         {
-            PerformHeavyAttack();
+            PerformHeavyAttack(abilityList[0]);
         }
         else
         {
-            PerformRangedAttack();
+            PerformRangedAttack(abilityList[0]);
         }
     }
 
-    private void PerformNormalAttack()
+    private void PerformNormalAttack(Ability ability)
     {
-        Ability.AbilityPhase normalPhase = new Ability.AbilityPhase
-        {
-            phaseName = "Normal Attack",
-            damageAmount = 15, // Set damage for this phase
-            phaseDuration = 1, // Duration of this phase
-            damageInstancePrefab = normalAttackPrefab, // Prefab reference
-            hitboxSize = new Vector2(2, 2),
-            hitboxOffset = Vector3.zero
-        };
-
-        StartCoroutine(ExecuteAttack(normalAttackPrefab, normalPhase, "Normal Attack"));
+        Ability.AbilityPhase phase = ability.phases[0];
+        StartCoroutine(ExecuteAttack(phase.damageInstancePrefab, phase, phase.phaseName));
     }
 
-    private void PerformHeavyAttack()
+    private void PerformHeavyAttack(Ability ability)
     {
-        Ability.AbilityPhase heavyPhase = new Ability.AbilityPhase
-        {
-            phaseName = "Heavy Attack",
-            damageAmount = 40, // Set damage for this phase
-            phaseDuration = 2, // Duration of this phase
-            damageInstancePrefab = heavyAttackPrefab, // Prefab reference
-            hitboxSize = new Vector2(3, 3),
-            hitboxOffset = Vector3.zero
-        };
-
-        StartCoroutine(ExecuteAttack(heavyAttackPrefab, heavyPhase, "Heavy Attack"));
+        Ability.AbilityPhase phase = ability.phases[1];
+        StartCoroutine(ExecuteAttack(phase.damageInstancePrefab, phase, phase.phaseName));
     }
 
-    private void PerformRangedAttack()
+    private void PerformRangedAttack(Ability ability)
     {
-        Ability.AbilityPhase rangedPhase = new Ability.AbilityPhase
-        {
-            phaseName = "Ranged Attack",
-            damageAmount = 30, // Set damage for this phase
-            phaseDuration = 1.5f, // Duration of this phase
-            damageInstancePrefab = rangedAttackPrefab, // Prefab reference
-            hitboxSize = new Vector2(2, 2),
-            hitboxOffset = Vector3.zero
-        };
-
-        StartCoroutine(ExecuteAttack(rangedAttackPrefab, rangedPhase, "Ranged Attack"));
+        Ability.AbilityPhase phase = ability.phases[2];
+        StartCoroutine(ExecuteAttack(phase.damageInstancePrefab, phase, phase.phaseName));
     }
 
 
     private void HandleShield()
     {
         // Face the player
-        transform.localScale = new Vector3(player.position.x > transform.position.x ? 1 : -1, 1, 1);
+        transform.localScale = new Vector3(player.position.x > transform.position.x ? 3 : -3, 5, 0);
 
         // Timer to disable shield after 5 seconds
         StartCoroutine(DisableShield());
@@ -177,7 +147,17 @@ public class BossController : MonoBehaviour
 
         // Instantiate the attack prefab
         Vector3 attackPosition = transform.position + transform.right;
-        GameObject attack = Instantiate(attackPrefab, attackPosition, Quaternion.identity);
+
+        GameObject attack = null;
+        Vector3 distance = (player.position - transform.position).normalized;
+        if (Vector3.Dot(distance, transform.right.normalized) < 0)
+        {
+            attack = Instantiate(attackPrefab, attackPosition, Quaternion.AngleAxis(90, new Vector3(0,0,1)));
+        }
+        else
+        {
+            attack = Instantiate(attackPrefab, attackPosition, Quaternion.identity);
+        }
 
         // Configure the damage instance with the given phase
         DamageManager damageManager = attack.GetComponent<DamageManager>();
