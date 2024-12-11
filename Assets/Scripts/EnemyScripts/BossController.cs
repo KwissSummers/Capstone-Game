@@ -13,8 +13,8 @@ public class BossController : MonoBehaviour
     public float CurrentHealth => currentHealth;
     public float MaxHealth => maxHealth;
 
-    private bool isStaggered;
-    private bool isShielded;
+    public bool isStaggered;
+    public bool isShielded;
 
     [Header("Attack Settings")]
     [SerializeField] private GameObject normalAttackPrefab;
@@ -157,10 +157,17 @@ public class BossController : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (isShielded) return; // Ignore damage if shielded
+        if (isShielded)
+        {
+            Debug.Log("Boss is shielded. No damage taken.");
+            return; // Ignore damage if shielded
+        }
 
         currentHealth -= damage;
         Debug.Log($"Boss took {damage} damage. Current health: {currentHealth}");
+
+        // Play damage or stagger animations here (optional)
+        // animator.SetTrigger("Damage"); // Example: trigger damage animation
 
         if (currentHealth <= 0)
         {
@@ -171,7 +178,7 @@ public class BossController : MonoBehaviour
 
         if (currentHealth <= maxHealth * 0.5f && !isStaggered)
         {
-            TriggerStagger();
+            TriggerStagger(); // Trigger stagger if health is below 50%
         }
 
         // Trigger shield at specific health thresholds
@@ -181,7 +188,19 @@ public class BossController : MonoBehaviour
         }
     }
 
-    private void TriggerShield()
+    public void TriggerStagger()
+    {
+        if (!isStaggered)
+        {
+            isStaggered = true;
+            Debug.Log("Boss is staggered!");
+
+            // Optionally trigger a stagger animation
+            // animator.SetTrigger("Stagger");
+        }
+    }
+
+    public void TriggerShield()
     {
         isShielded = true;
         GameObject shield = Instantiate(shieldingPrefab, transform.position + transform.right, Quaternion.identity);
@@ -189,9 +208,5 @@ public class BossController : MonoBehaviour
         Debug.Log("Boss is shielded!");
     }
 
-    private void TriggerStagger()
-    {
-        isStaggered = true;
-        Debug.Log("Boss is staggered!");
-    }
+   
 }

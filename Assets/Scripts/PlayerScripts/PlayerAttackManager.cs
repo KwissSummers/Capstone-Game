@@ -77,27 +77,23 @@ public class PlayerAttackManager : MonoBehaviour
         lastAttackTime = Time.time;
 
         // Calculate the spawn position with offset based on the player's direction
-        //Vector3 offset = new Vector3(ability.spawnDistance, 0, 0);
-        //if (transform.localScale.x < 0) // Check the player's facing direction
-        //{
-        //    offset.x = -offset.x; // Reverse offset if player is facing left
-        //}
-        //Vector3 attackPosition = transform.position + offset;
-
-        // Spawn the ability prefab at the calculated position
         if (playerMovement.facingLeft)
         {
-            GameObject attack = Instantiate(ability.attackPrefab, attackSpawnPos.position, Quaternion.AngleAxis(90, new Vector3(0,0,1)));
+            GameObject attack = Instantiate(ability.attackPrefab, attackSpawnPos.position, Quaternion.AngleAxis(90, new Vector3(0, 0, 1)));
+            attack.GetComponent<DamageManager>().SetDirection(Vector3.left); // Ensure direction is set
         }
         else
         {
             GameObject attack = Instantiate(ability.attackPrefab, attackSpawnPos.position, Quaternion.identity);
+            attack.GetComponent<DamageManager>().SetDirection(Vector3.right);
         }
 
+        // Optionally, add a delay here for animations or effects
         yield return new WaitForSeconds(ability.cooldown);
 
         isAttacking = false;
     }
+
 
 
 
