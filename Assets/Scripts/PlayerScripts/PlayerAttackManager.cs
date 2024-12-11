@@ -15,7 +15,7 @@ public class PlayerAttackManager : MonoBehaviour
     private Vector2 recoilDirection = Vector2.zero; // To store direction of recoil
 
     [Header("Attack Settings")]
-    [SerializeField] private float attackCooldown = 0.5f; // Cooldown between attacks
+    [SerializeField] private float attackCooldown = 0.4f; // Global cooldown between attacks
     [SerializeField] private int parryCost = 10; // Stamina cost for parrying
     [SerializeField] private Transform attackSpawnPos; // Position where attacks are spawned
     private bool isAttacking;
@@ -33,6 +33,7 @@ public class PlayerAttackManager : MonoBehaviour
     private void Update()
     {
         PerformAttack();
+        HandlePlayerFacing(); // Ensure player facing direction is updated
     }
 
     private void PerformAttack()
@@ -40,9 +41,46 @@ public class PlayerAttackManager : MonoBehaviour
         if (isAttacking || Time.time < lastAttackTime + attackCooldown)
             return;
 
-        if (Input.GetKeyDown(KeyCode.Mouse0)) // Example input for ability 0
+        // Basic Attack (X)
+        if (Input.GetKeyDown(KeyCode.X)) // X key for basic attack
         {
             UseAbility(0);
+        }
+
+        // Heavy Attack (Hold X)
+        if (Input.GetKey(KeyCode.X) && !isAttacking && Time.time > lastAttackTime + attackCooldown)
+        {
+            StartCoroutine(HeavyAttack());
+        }
+
+        // Ranged Attack (F)
+        if (Input.GetKeyDown(KeyCode.F)) // F key for ranged attack
+        {
+            UseAbility(2);
+        }
+
+        // Dash Attack (C + X)
+        if (Input.GetKeyDown(KeyCode.C) && Input.GetKeyDown(KeyCode.X)) // C + X
+        {
+            UseAbility(3);
+        }
+
+        // Upward Slash (X + Up Arrow)
+        if (Input.GetKeyDown(KeyCode.X) && Input.GetKeyDown(KeyCode.UpArrow)) // X + Up Arrow
+        {
+            UseAbility(4);
+        }
+
+        // Downward Slash (X + Down Arrow)
+        if (Input.GetKeyDown(KeyCode.X) && Input.GetKeyDown(KeyCode.DownArrow)) // X + Down Arrow
+        {
+            UseAbility(5);
+        }
+
+        // Parry (Space Bar)
+        if (Input.GetKeyDown(KeyCode.Space)) // Space Bar for parry
+        {
+            PerformParry();
         }
     }
 
@@ -66,8 +104,8 @@ public class PlayerAttackManager : MonoBehaviour
             // Spawn damage instance for this phase
             if (phase.damageInstancePrefab != null)
             {
-                Vector3 spawnPosition = attackSpawnPos.position + 
-                                        new Vector3(phase.hitboxOffset.x * (playerMovement.facingLeft ? -1 : 1), 
+                Vector3 spawnPosition = attackSpawnPos.position +
+                                        new Vector3(phase.hitboxOffset.x * (playerMovement.facingLeft ? -1 : 1),
                                                     phase.hitboxOffset.y, 0);
                 GameObject damageInstance = Instantiate(phase.damageInstancePrefab, spawnPosition, Quaternion.identity);
 
@@ -85,6 +123,14 @@ public class PlayerAttackManager : MonoBehaviour
         }
 
         isAttacking = false;
+    }
+
+    private IEnumerator HeavyAttack()
+    {
+        isAttacking = true;
+        lastAttackTime = Time.time;
+        yield return new WaitForSeconds(1f); // Hold for 1 second to trigger heavy attack
+        UseAbility(1); // Use heavy attack ability
     }
 
     public void TriggerRecoil(float damage)
@@ -157,9 +203,16 @@ public class PlayerAttackManager : MonoBehaviour
         GameObject parryObject = new GameObject("ParryCollider");
         parryObject.transform.position = parryPosition;
 
+        // Add a BoxCollider2D (trigger)
         BoxCollider2D collider = parryObject.AddComponent<BoxCollider2D>();
         collider.isTrigger = true;
-        Destroy(parryObject, 0.2f);
+
+        // Attach ParryCollider to handle collision
+        ParryCollider parryCollider = parryObject.AddComponent<ParryCollider>();
+        parryCollider.SetRecoilDirection(new Vector2(transform.localScale.x * -0.5f, 0));
+
+        // Destroy the parry object after a short duration (0.5f)
+        Destroy(parryObject, 0.5f);
 
         ApplyParryRecoil();
         Debug.Log("Parry performed!");
@@ -170,5 +223,13 @@ public class PlayerAttackManager : MonoBehaviour
         recoilDirection = new Vector2(transform.localScale.x * -0.5f, 0);
         isRecoilingX = true;
         StartCoroutine(RecoilX());
+    }
+
+    private void HandlePlayerFacing()
+    {
+        if (playerMovement.facingLeft != (Input.GetKey(KeyCode.LeftArrow)))
+        {
+            playerMovement.facingLeft = !playerMovement.facingLeft;
+        }
     }
 }

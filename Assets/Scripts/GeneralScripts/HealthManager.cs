@@ -1,5 +1,3 @@
-// HealthManager.cs
-
 using System;
 using System.Collections;
 using UnityEngine;
@@ -20,6 +18,11 @@ public class HealthManager : MonoBehaviour
     [SerializeField] public float invincibilityTime = 1.0f;
     private bool isInvincible;
 
+    [Header("Healing Cooldown")]
+    [SerializeField] private float healCooldown = 0.5f; // 0.5 seconds cooldown for healing
+    private float healCooldownTimer = 0f; // Timer to track cooldown time
+    public bool isHealing = false; // To check if a heal is already in progress
+
     private Rigidbody2D rb;
 
     private void Start()
@@ -35,11 +38,9 @@ public class HealthManager : MonoBehaviour
 
     private void Update()
     {
-        // Prevent health from exceeding max or going below 0
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         UpdateHealthUI();
 
-        // Update boss health UI (if the boss exists)
         if (bossController != null)
         {
             UpdateBossHealthUI();
@@ -48,6 +49,12 @@ public class HealthManager : MonoBehaviour
         if (currentHealth <= 0)
         {
             HandleDeath();
+        }
+
+        // Update the cooldown timer each frame
+        if (healCooldownTimer > 0)
+        {
+            healCooldownTimer -= Time.deltaTime;
         }
     }
 
@@ -87,16 +94,35 @@ public class HealthManager : MonoBehaviour
         isInvincible = false;
     }
 
-    public void Heal(float amount)
+    public void Heal(float amount, StaminaManager staminaManager)
     {
-        currentHealth += amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        Debug.Log($"Player healed for {amount}. Current health: {currentHealth}");
+        if (!isHealing && staminaManager.UseStamina(25f)) // If not healing already
+        {
+            currentHealth += amount;
+            currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+            Debug.Log($"Player healed for {amount}. Current health: {currentHealth}");
+
+            isHealing = true; // Mark healing as in progress
+            healCooldownTimer = healCooldown; // Start cooldown timer after healing
+
+            // Allow healing to occur again only after cooldown
+            StartCoroutine(ResetHealing());
+        }
+        else
+        {
+            Debug.Log("Not enough stamina to heal.");
+        }
+    }
+
+    private IEnumerator ResetHealing()
+    {
+        yield return new WaitForSeconds(healCooldown);
+        isHealing = false; // Reset the healing flag
     }
 
     private void HandleDeath()
     {
         Debug.Log("Player has died!");
-        //Destroy(gameObject); // Optionally trigger death animation or respawn logic
+        // Destroy(gameObject); // Optionally trigger death animation or respawn logic
     }
 }
