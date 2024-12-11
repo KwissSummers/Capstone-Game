@@ -56,7 +56,7 @@ public class PlayerAttackManager : MonoBehaviour
         if (isAttacking || Time.time < lastAttackTime + attackCD)
             return;
 
-        if (Input.GetKeyDown(KeyCode.G)) // Example input for ability 0
+        if (Input.GetKeyDown(KeyCode.Mouse0)) // Example input for ability 0
         {
             UseAbility(0);
         }

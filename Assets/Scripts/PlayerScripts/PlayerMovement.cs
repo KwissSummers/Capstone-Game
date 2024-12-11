@@ -173,7 +173,6 @@ public class PlayerMovement : MonoBehaviour
                 jumpSteps++; // Increment the jump step counter.
             }
 
-
             if (!isJumping)
             {
                 SetGravityScale(freefallGravScale);
@@ -182,7 +181,6 @@ public class PlayerMovement : MonoBehaviour
                 SetGravityScale(7f);
             }
         }
-
 
         // Handle gravity and fall speed
         if (rb.velocity.y < -fallSpeed)
@@ -227,11 +225,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (xAxis > 0)
         {
-            transform.localScale = new Vector3(1, 1.5f, 1);
+            transform.localScale = new Vector3(1.5f, 2f, 1f);
         }
         else if (xAxis < 0)
         {
-            transform.localScale = new Vector3(-1, 1.5f, 1);
+            transform.localScale = new Vector3(-1.5f, 2f, 1f);
         }
     }
 
