@@ -259,5 +259,4 @@ public class PlayerMovement : MonoBehaviour
             wasJumping = false;
         }
     }
-
 }
