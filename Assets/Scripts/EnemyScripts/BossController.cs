@@ -96,18 +96,49 @@ public class BossController : MonoBehaviour
 
     private void PerformNormalAttack()
     {
-        StartCoroutine(ExecuteAttack(normalAttackPrefab, 15, "Normal Attack"));
+        Ability.AbilityPhase normalPhase = new Ability.AbilityPhase
+        {
+            phaseName = "Normal Attack",
+            damageAmount = 15, // Set damage for this phase
+            phaseDuration = 1, // Duration of this phase
+            damageInstancePrefab = normalAttackPrefab, // Prefab reference
+            hitboxSize = new Vector2(2, 2),
+            hitboxOffset = Vector3.zero
+        };
+
+        StartCoroutine(ExecuteAttack(normalAttackPrefab, normalPhase, "Normal Attack"));
     }
 
     private void PerformHeavyAttack()
     {
-        StartCoroutine(ExecuteAttack(heavyAttackPrefab, 40, "Heavy Attack"));
+        Ability.AbilityPhase heavyPhase = new Ability.AbilityPhase
+        {
+            phaseName = "Heavy Attack",
+            damageAmount = 40, // Set damage for this phase
+            phaseDuration = 2, // Duration of this phase
+            damageInstancePrefab = heavyAttackPrefab, // Prefab reference
+            hitboxSize = new Vector2(3, 3),
+            hitboxOffset = Vector3.zero
+        };
+
+        StartCoroutine(ExecuteAttack(heavyAttackPrefab, heavyPhase, "Heavy Attack"));
     }
 
     private void PerformRangedAttack()
     {
-        StartCoroutine(ExecuteAttack(rangedAttackPrefab, 30, "Ranged Attack"));
+        Ability.AbilityPhase rangedPhase = new Ability.AbilityPhase
+        {
+            phaseName = "Ranged Attack",
+            damageAmount = 30, // Set damage for this phase
+            phaseDuration = 1.5f, // Duration of this phase
+            damageInstancePrefab = rangedAttackPrefab, // Prefab reference
+            hitboxSize = new Vector2(2, 2),
+            hitboxOffset = Vector3.zero
+        };
+
+        StartCoroutine(ExecuteAttack(rangedAttackPrefab, rangedPhase, "Ranged Attack"));
     }
+
 
     private void HandleShield()
     {
@@ -136,7 +167,7 @@ public class BossController : MonoBehaviour
         isStaggered = false;
     }
 
-    private IEnumerator ExecuteAttack(GameObject attackPrefab, int damage, string attackName)
+    private IEnumerator ExecuteAttack(GameObject attackPrefab, Ability.AbilityPhase phase, string attackName)
     {
         lastAttackTime = Time.time;
         Debug.Log($"Boss performing {attackName}");
@@ -147,13 +178,20 @@ public class BossController : MonoBehaviour
         // Instantiate the attack prefab
         Vector3 attackPosition = transform.position + transform.right;
         GameObject attack = Instantiate(attackPrefab, attackPosition, Quaternion.identity);
-        attack.GetComponent<DamageManager>().SetDamage(damage);
+
+        // Configure the damage instance with the given phase
+        DamageManager damageManager = attack.GetComponent<DamageManager>();
+        if (damageManager != null)
+        {
+            damageManager.SetPhase(phase); // Pass the entire AbilityPhase
+        }
 
         // Wait for the attack animation to complete
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(phase.phaseDuration > 0 ? phase.phaseDuration : 1);
 
         Debug.Log($"{attackName} completed");
     }
+
 
     public void TakeDamage(int damage)
     {

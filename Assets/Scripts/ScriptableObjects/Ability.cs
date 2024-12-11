@@ -5,15 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "New Ability")]
 public class Ability : ScriptableObject
 {
-    // Existing Properties
-    public GameObject attackPrefab; // Prefab with animations and sound
-    public float damage; // Damage ability does
-    public float cooldown; // Cooldown before re-use
-    public float lifespan; // How long object lasts for
-    public float speed; // Speed the object travels
-    public float spawnDistance; // Distance from the user's origin point
-
-    // New Properties for Multi-Phase Abilities
+    // New Multi-Phase Properties
     [System.Serializable]
     public class AbilityPhase
     {
@@ -26,50 +18,29 @@ public class Ability : ScriptableObject
         // Hitbox Customization
         public Vector2 hitboxSize = Vector2.one; // Width and height of the hitbox
         public Vector3 hitboxOffset = Vector3.zero; // Offset from the prefab's origin
-        public int damageAmount; // Damage specific to this phase (overrides general damage)
+        public int damageAmount; // Damage specific to this phase
     }
 
     public List<AbilityPhase> phases = new List<AbilityPhase>(); // List of all phases in this ability
-
     public float defaultPhaseDuration = 1f; // Default duration if not specified
 
     // Method to Execute Ability
     public IEnumerator ExecuteAbility(Transform userTransform)
     {
-        for (int i = 0; i < phases.Count; i++)
+        foreach (var phase in phases)
         {
-            AbilityPhase phase = phases[i];
-            Debug.Log($"Executing Phase {i + 1}: {phase.phaseName}");
+            Debug.Log($"Executing Phase: {phase.phaseName}");
 
             // Trigger Animation
-            if (phase.animation != null)
-            {
-                Animator animator = userTransform.GetComponent<Animator>();
-                if (animator != null)
-                {
-                    animator.Play(phase.animation.name);
-                }
-            }
+            PlayAnimation(userTransform, phase.animation);
 
             // Play Sound
-            if (phase.sound != null)
-            {
-                AudioSource.PlayClipAtPoint(phase.sound, userTransform.position);
-            }
+            PlaySound(userTransform, phase.sound);
 
-            // Spawn and Customize Damage Instance
+            // Spawn and Configure Damage Instance
             if (phase.damageInstancePrefab != null)
             {
-                Vector3 spawnPosition = userTransform.position + userTransform.right * spawnDistance;
-                GameObject instance = Instantiate(phase.damageInstancePrefab, spawnPosition, Quaternion.identity);
-
-                // Configure the hitbox
-                DamageManager damageManager = instance.GetComponent<DamageManager>();
-                if (damageManager != null)
-                {
-                    damageManager.SetDamage((int)(phase.damageAmount > 0 ? phase.damageAmount : damage));
-                    damageManager.SetHitbox(phase.hitboxSize, phase.hitboxOffset);
-                }
+                SpawnDamageInstance(userTransform, phase);
             }
 
             // Wait for the phase duration
@@ -77,5 +48,68 @@ public class Ability : ScriptableObject
         }
 
         Debug.Log("Ability execution complete.");
+    }
+
+    // Helper to Play Animation
+    private void PlayAnimation(Transform userTransform, AnimationClip animation)
+    {
+        if (animation != null)
+        {
+            Animator animator = userTransform.GetComponent<Animator>();
+            if (animator != null)
+            {
+                animator.Play(animation.name);
+            }
+            else
+            {
+                Debug.LogWarning("Animator not found on user transform.");
+            }
+        }
+    }
+
+    // Helper to Play Sound
+    private void PlaySound(Transform userTransform, AudioClip sound)
+    {
+        if (sound != null)
+        {
+            AudioSource.PlayClipAtPoint(sound, userTransform.position);
+        }
+    }
+
+    // Helper to Spawn Damage Instance
+    private void SpawnDamageInstance(Transform userTransform, AbilityPhase phase)
+    {
+        Vector3 spawnPosition = userTransform.position + userTransform.right * phase.hitboxOffset.x +
+                                userTransform.up * phase.hitboxOffset.y;
+        GameObject instance = Instantiate(phase.damageInstancePrefab, spawnPosition, Quaternion.identity);
+
+        // Configure the hitbox
+        DamageManager damageManager = instance.GetComponent<DamageManager>();
+        if (damageManager != null)
+        {
+            damageManager.SetPhase(phase);
+            damageManager.SetHitbox(phase.hitboxSize, phase.hitboxOffset);
+        }
+    }
+
+    // Editor Validation
+    private void OnValidate()
+    {
+        if (phases.Count == 0)
+        {
+            Debug.LogWarning($"Ability '{name}' has no phases defined!");
+        }
+
+        foreach (var phase in phases)
+        {
+            if (phase.damageInstancePrefab == null)
+            {
+                Debug.LogWarning($"Phase '{phase.phaseName}' in ability '{name}' is missing a damage instance prefab.");
+            }
+            if (phase.phaseDuration <= 0)
+            {
+                Debug.LogWarning($"Phase '{phase.phaseName}' in ability '{name}' has an invalid duration. Using default duration.");
+            }
+        }
     }
 }
