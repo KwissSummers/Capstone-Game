@@ -725,11 +725,10 @@ MonoBehaviour:
   staggerDuration: 3
   bossSpeed: 5
   currentHealth: 0
-  normalAttackPrefab: {fileID: 0}
-  heavyAttackPrefab: {fileID: 0}
-  specialAttackPrefab: {fileID: 0}
-  runningAttackPrefab: {fileID: 0}
-  rangedAttackPrefab: {fileID: 0}
+  isStaggered: 0
+  isShielded: 0
+  abilityList:
+  - {fileID: 11400000, guid: c9c841dfaac74b24388411bc1a0c51ef, type: 2}
   shieldingPrefab: {fileID: 0}
   attackCooldown: 2
 --- !u!61 &448189812
@@ -1689,10 +1688,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a28afc376c089624eb36dbd3cf530cca, type: 2}
   recoilXSpeed: 45
   recoilYSpeed: 45
-  attackCD: 0.5
+  attackCooldown: 0.5
   parryCost: 10
   attackSpawnPos: {fileID: 1126178330}
-  isAttacking: 0
 --- !u!1 &1492148922
 GameObject:
   m_ObjectHideFlags: 0

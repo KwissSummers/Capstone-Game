@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 846753899533302150}
   - component: {fileID: 8769890302593936914}
   m_Layer: 0
-  m_Name: BasicAttack
+  m_Name: HeavyAttack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98,10 +98,10 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 64
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 128
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -143,4 +143,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cf18936eba43a3448eab496ac4053aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ability: {fileID: 11400000, guid: a28afc376c089624eb36dbd3cf530cca, type: 2}
+  currentPhase:
+    phaseName: 
+    animation: {fileID: 0}
+    sound: {fileID: 0}
+    phaseDuration: 0
+    damageInstancePrefab: {fileID: 0}
+    hitboxSize: {x: 1, y: 1}
+    hitboxOffset: {x: 0, y: 0, z: 0}
+    damageAmount: 0

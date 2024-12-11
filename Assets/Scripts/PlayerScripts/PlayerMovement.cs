@@ -1,9 +1,7 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -13,7 +11,6 @@ public class PlayerMovement : MonoBehaviour
     public float speedIncreaseTime = 2f; // Time to maintain direction before speed increases
     private float currentSpeed; // Current speed based on time walking in the same direction
     private float timeWalkingInDirection = 0f; // Time spent walking in the same direction
-    private float lastXAxis = 0f; // Last horizontal input to detect direction change
 
     public float jumpSpeed = 18f; // Jump speed
     public float fallSpeed = 20f; // Maximum fall speed
@@ -38,7 +35,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
 
     private Rigidbody2D rb;
-    //private new Camera camera;
     private GameObject player;
 
     private float xAxis; // Horizontal input axis
@@ -52,10 +48,11 @@ public class PlayerMovement : MonoBehaviour
     // Recoil variables
     public bool recoilingX = false; // Flag for horizontal recoil
 
+    private float healingTimer = 0f; // To track how long 'D' is held down for healing
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        //camera = Camera.main;
         player = GameObject.FindWithTag("Player");
         dashesRemaining = maxDashes; // Initialize dash count
     }
@@ -70,37 +67,48 @@ public class PlayerMovement : MonoBehaviour
         HandleMovement(); // Movement, dashing and jumping updates
     }
 
-    //private void LateUpdate()
-    //{
-    //    camera.transform.position = Vector3.SmoothDamp(
-    //        camera.transform.position,
-    //        new Vector3(player.transform.position.x, player.transform.position.y, camera.transform.position.z) + new Vector3(0, 1, 0),
-    //        ref velocity,
-    //        camSmoothSpeed
-    //    );
-    //}
-
     private void GetInputs()
     {
-        xAxis = Input.GetAxis("Horizontal");
-        if(xAxis > 0)
-        {
-            facingLeft = false;
-        }
-        else if(xAxis < 0)
-        {
-            facingLeft = true;
-        }
-        isJumping = Input.GetButton("Jump");
+        // Horizontal movement using only left and right arrow keys
+        xAxis = 0f; // Reset horizontal input every frame
+        if (Input.GetKey(KeyCode.LeftArrow)) xAxis = -1f;
+        else if (Input.GetKey(KeyCode.RightArrow)) xAxis = 1f;
 
-        // Check if the 'C' key is pressed and the player can dash (dashesRemaining > 0 and dashCooldownTimer <= 0)
+        // Jump is bound to the Z key
+        isJumping = Input.GetKey(KeyCode.Z);
+
+        // Dash triggered by the 'C' key
         if (!isDashing && Input.GetKeyDown(KeyCode.C) && dashesRemaining > 0 && dashCooldownTimer <= 0)
         {
             isDashing = true;
         }
+
+        // Healing triggered by holding 'D' for 1.5 seconds
+        if (Input.GetKey(KeyCode.D))
+        {
+            healingTimer += Time.deltaTime;
+
+            // Start healing when the timer reaches 1.5 seconds and healing isn't already in progress
+            if (healingTimer >= 1.5f)
+            {
+                HealthManager healthManager = GetComponent<HealthManager>();
+                StaminaManager staminaManager = GetComponent<StaminaManager>();
+
+                if (healthManager != null && staminaManager != null)
+                {
+                    healthManager.Heal(0.25f * healthManager.maxHealth, staminaManager); // Heal 25% of max health
+                }
+
+                healingTimer = 0f; // Reset the healing timer after the heal has triggered
+            }
+        }
+        else
+        {
+            healingTimer = 0f; // Reset the healing timer if the 'D' key is released
+        }
     }
 
-    private void HandleMovement()
+private void HandleMovement()
     {
         if (!isDashing && !recoilingX) // Prevent movement during dashing or recoiling
         {
@@ -155,19 +163,21 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(recoilDuration);
         recoilingX = false; // Stop recoil after duration
     }
+
     private void ResetSpeed()
     {
         // Reset the current speed to the original walkSpeed
         currentSpeed = walkSpeed;
         timeWalkingInDirection = 0f; // Reset the time spent walking in the same direction
     }
+
     private void HandleJump()
     {
         if (!isDashing)
         {
             if (jumpSteps < maxJumpSteps && (isJumping && !wasJumping))
             {
-                 // The space bar is initially pressed down, initiate the jump.
+                // The Z key is initially pressed down, initiate the jump.
                 rb.velocity = new Vector2(rb.velocity.x, jumpSpeed); // Apply the initial jump speed
                 SetGravityScale(5f);
                 jumpSteps++; // Increment the jump step counter.
@@ -176,7 +186,8 @@ public class PlayerMovement : MonoBehaviour
             if (!isJumping)
             {
                 SetGravityScale(freefallGravScale);
-            } else if (isJumping)
+            }
+            else if (isJumping)
             {
                 SetGravityScale(7f);
             }
@@ -223,15 +234,25 @@ public class PlayerMovement : MonoBehaviour
 
     private void Flip()
     {
-        if (xAxis > 0)
+        // Check the movement input to determine the facing direction
+        if (xAxis > 0) // Moving right
         {
-            transform.localScale = new Vector3(1.5f, 2f, 1f);
+            if (facingLeft)
+            {
+                facingLeft = false;
+                transform.localScale = new Vector3(1.5f, 2f, 1f); // Flip the player to face right
+            }
         }
-        else if (xAxis < 0)
+        else if (xAxis < 0) // Moving left
         {
-            transform.localScale = new Vector3(-1.5f, 2f, 1f);
+            if (!facingLeft)
+            {
+                facingLeft = true;
+                transform.localScale = new Vector3(-1.5f, 2f, 1f); // Flip the player to face left
+            }
         }
     }
+
 
     private bool Grounded()
     {
@@ -245,12 +266,11 @@ public class PlayerMovement : MonoBehaviour
 
     public bool IsJumping() { return isJumping; }
 
-
     private void SetGravityScale(float scale)
     {
         rigidBody.gravityScale = scale;
     }
- 
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
@@ -259,4 +279,5 @@ public class PlayerMovement : MonoBehaviour
             wasJumping = false;
         }
     }
+    
 }

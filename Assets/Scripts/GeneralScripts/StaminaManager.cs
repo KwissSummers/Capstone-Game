@@ -1,9 +1,7 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
 public class StaminaManager : MonoBehaviour
 {
     [Header("Stamina Settings")]
@@ -19,13 +17,8 @@ public class StaminaManager : MonoBehaviour
 
     private void Update()
     {
-        // Regenerate stamina over time
         RegenerateStamina();
-
-        // Prevent stamina from exceeding max or going below 0
         stamina = Mathf.Clamp(stamina, 0, maxStamina);
-
-        // Update stamina UI
         UpdateStaminaUI();
     }
 
@@ -39,6 +32,7 @@ public class StaminaManager : MonoBehaviour
 
         stamina -= amount;
         Debug.Log($"Used {amount} stamina. Remaining stamina: {stamina}");
+        UpdateStaminaUI();  // Ensure UI is updated after using stamina
         return true;
     }
 
@@ -63,5 +57,21 @@ public class StaminaManager : MonoBehaviour
         float staminaGained = damage * 0.5f; // Gain 50% of damage dealt as stamina
         stamina = Mathf.Clamp(stamina + staminaGained, 0, maxStamina);
         Debug.Log($"Gained {staminaGained} stamina from damage dealt.");
+        UpdateStaminaUI();  // Ensure UI is updated after gaining stamina
+    }
+
+    public void Heal(float healAmount)
+    {
+        // Heal the player using stamina (consumes stamina)
+        if (stamina >= healAmount)
+        {
+            stamina -= healAmount;
+            Debug.Log($"Healed {healAmount} stamina. Remaining stamina: {stamina}");
+            UpdateStaminaUI();  // Update UI after healing
+        }
+        else
+        {
+            Debug.Log("Not enough stamina to heal!");
+        }
     }
 }

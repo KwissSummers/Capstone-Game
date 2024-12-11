@@ -24,9 +24,21 @@ public class Ability : ScriptableObject
     public List<AbilityPhase> phases = new List<AbilityPhase>(); // List of all phases in this ability
     public float defaultPhaseDuration = 1f; // Default duration if not specified
 
+    // Cooldown for the entire ability
+    public float abilityCooldown = 0.4f; // Cooldown for the ability as a whole
+    private float lastUsedTime = -Mathf.Infinity;
+
     // Method to Execute Ability
     public IEnumerator ExecuteAbility(Transform userTransform)
     {
+        if (Time.time < lastUsedTime + abilityCooldown)
+        {
+            Debug.Log("Ability on cooldown!");
+            yield break; // Exit if the ability is on cooldown
+        }
+
+        lastUsedTime = Time.time; // Set the time the ability was used
+
         foreach (var phase in phases)
         {
             Debug.Log($"Executing Phase: {phase.phaseName}");
