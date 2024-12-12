@@ -10,16 +10,16 @@ public class Ability : ScriptableObject
     public class AbilityPhase
     {
         public string phaseName; // Optional name for the phase
-        public AnimationClip animation; // Animation for this phase
+        public List<AnimationClip> animations = new List<AnimationClip>(); // Multiple animations for this phase
         public AudioClip sound; // Sound for this phase
         public float phaseDuration; // Duration of this phase
         public GameObject damageInstancePrefab; // Damage instance for this phase (optional)
 
-        // Hitbox Customization
         public Vector2 hitboxSize = Vector2.one; // Width and height of the hitbox
         public Vector3 hitboxOffset = Vector3.zero; // Offset from the prefab's origin
         public int damageAmount; // Damage specific to this phase
     }
+
 
     public List<AbilityPhase> phases = new List<AbilityPhase>(); // List of all phases in this ability
     public float defaultPhaseDuration = 1f; // Default duration if not specified
@@ -37,17 +37,34 @@ public class Ability : ScriptableObject
             yield break; // Exit if the ability is on cooldown
         }
 
-        lastUsedTime = Time.time; // Set the time the ability was used
+        lastUsedTime = Time.time;
 
         foreach (var phase in phases)
         {
             Debug.Log($"Executing Phase: {phase.phaseName}");
 
-            // Trigger Animation
-            PlayAnimation(userTransform, phase.animation);
+            // Trigger multiple animations
+            Animator animator = userTransform.GetComponent<Animator>();
+            if (animator != null && phase.animations.Count > 0)
+            {
+                foreach (var animation in phase.animations)
+                {
+                    if (animation != null)
+                    {
+                        animator.Play(animation.name);
+                    }
+                }
+            }
+            else
+            {
+                Debug.LogWarning("No animator or animations found for this phase.");
+            }
 
             // Play Sound
-            PlaySound(userTransform, phase.sound);
+            if (phase.sound != null)
+            {
+                AudioSource.PlayClipAtPoint(phase.sound, userTransform.position);
+            }
 
             // Spawn and Configure Damage Instance
             if (phase.damageInstancePrefab != null)
@@ -61,6 +78,7 @@ public class Ability : ScriptableObject
 
         Debug.Log("Ability execution complete.");
     }
+
 
     // Helper to Play Animation
     private void PlayAnimation(Transform userTransform, AnimationClip animation)

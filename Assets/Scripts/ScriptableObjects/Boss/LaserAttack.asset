@@ -10,32 +10,40 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18231260a9b7d574db4239db82a95f75, type: 3}
-  m_Name: BasicAttack
+  m_Name: LaserAttack
   m_EditorClassIdentifier: 
   phases:
-  - phaseName: 
+  - phaseName: Laser Start
     animation: {fileID: 0}
     sound: {fileID: 0}
-    phaseDuration: 0
+    phaseDuration: 0.5
     damageInstancePrefab: {fileID: 0}
     hitboxSize: {x: 0, y: 0}
     hitboxOffset: {x: 0, y: 0, z: 0}
     damageAmount: 0
-  - phaseName: 
+  - phaseName: Laser Charge
     animation: {fileID: 0}
     sound: {fileID: 0}
-    phaseDuration: 0
+    phaseDuration: 2
     damageInstancePrefab: {fileID: 0}
     hitboxSize: {x: 0, y: 0}
     hitboxOffset: {x: 0, y: 0, z: 0}
     damageAmount: 0
-  - phaseName: 
+  - phaseName: Laser Fire
     animation: {fileID: 0}
     sound: {fileID: 0}
-    phaseDuration: 0
+    phaseDuration: 1
+    damageInstancePrefab: {fileID: 6813913808674462319, guid: 3653384c59b2fe74087f172f65fbe654, type: 3}
+    hitboxSize: {x: 20, y: 4}
+    hitboxOffset: {x: -4, y: 4, z: 0}
+    damageAmount: 50
+  - phaseName: Laser End
+    animation: {fileID: 0}
+    sound: {fileID: 0}
+    phaseDuration: 0.5
     damageInstancePrefab: {fileID: 0}
     hitboxSize: {x: 0, y: 0}
     hitboxOffset: {x: 0, y: 0, z: 0}
     damageAmount: 0
-  defaultPhaseDuration: 1
-  abilityCooldown: 0.4
+  defaultPhaseDuration: 5
+  abilityCooldown: 10

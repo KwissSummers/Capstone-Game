@@ -959,7 +959,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.4200115, y: -5.51387, z: -10}
+  m_LocalPosition: {x: -12.974778, y: -5.5145197, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1672,6 +1672,8 @@ MonoBehaviour:
   bossHealthBar: {fileID: 727493559}
   bossController: {fileID: 448189811}
   invincibilityTime: 0.5
+  healCooldown: 0.5
+  isHealing: 0
 --- !u!114 &1333216840
 MonoBehaviour:
   m_ObjectHideFlags: 0
