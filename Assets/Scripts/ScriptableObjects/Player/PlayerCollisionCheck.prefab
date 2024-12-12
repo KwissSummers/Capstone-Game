@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 846753899533302150}
   - component: {fileID: 8769890302593936914}
   m_Layer: 0
-  m_Name: NormalAttack
+  m_Name: PlayerCollisionCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98,10 +98,10 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 648
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 64
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -115,7 +115,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentPhase:
     phaseName: 
-    animation: {fileID: 0}
+    animations: []
     sound: {fileID: 0}
     phaseDuration: 0
     damageInstancePrefab: {fileID: 0}
