@@ -885,6 +885,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4ab6cff7cd57e144395e3369d19e8d4c, type: 2}
   - {fileID: 11400000, guid: c9c841dfaac74b24388411bc1a0c51ef, type: 2}
   - {fileID: 11400000, guid: c9c841dfaac74b24388411bc1a0c51ef, type: 2}
+  - {fileID: 11400000, guid: 2a799011c476de34eadf99a1baadd0d4, type: 2}
+  - {fileID: 11400000, guid: 1f6b6d0714f763043b2b9dfb0de0efdc, type: 2}
+  - {fileID: 11400000, guid: 1aa623e7091bdca448847309df4afdd8, type: 2}
+  - {fileID: 11400000, guid: b741827e292eb344d8c3eb91ee01eb3f, type: 2}
+  - {fileID: 11400000, guid: c418bfbc992742142807621d71bc5db0, type: 2}
+  - {fileID: 11400000, guid: 4ab6cff7cd57e144395e3369d19e8d4c, type: 2}
+  - {fileID: 11400000, guid: 1f502835922cded4d8e33c09705eb0d3, type: 2}
   shieldingPrefab: {fileID: 0}
   attackCooldown: 2
 --- !u!61 &448189812
