@@ -7,7 +7,7 @@ public class BossController : MonoBehaviour
 {
     [Header("Health and States")]
     [SerializeField] public float maxHealth = 1000;
-    [SerializeField] public float staggerDuration = 3.0f;
+    [SerializeField] public float staggerDuration = 5.0f;
     [SerializeField] public float bossSpeed = 5.0f;
     [SerializeField] private float currentHealth;
 

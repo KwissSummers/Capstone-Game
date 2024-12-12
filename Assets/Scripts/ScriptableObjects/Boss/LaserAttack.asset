@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   phases:
   - phaseName: Laser Start
-    animations: []
+    animations:
+    - {fileID: 0}
     sound: {fileID: 0}
     phaseDuration: 0.5
     damageInstancePrefab: {fileID: 0}
@@ -22,7 +23,8 @@ MonoBehaviour:
     hitboxOffset: {x: 0, y: 0, z: 0}
     damageAmount: 0
   - phaseName: Laser Charge
-    animations: []
+    animations:
+    - {fileID: 0}
     sound: {fileID: 0}
     phaseDuration: 2
     damageInstancePrefab: {fileID: 0}
@@ -30,7 +32,9 @@ MonoBehaviour:
     hitboxOffset: {x: 0, y: 0, z: 0}
     damageAmount: 0
   - phaseName: Laser Fire
-    animations: []
+    animations:
+    - {fileID: 0}
+    - {fileID: 0}
     sound: {fileID: 0}
     phaseDuration: 1
     damageInstancePrefab: {fileID: 6970181263637035254, guid: f87fad196c168ce4fa4312674102d38b, type: 3}
@@ -38,7 +42,9 @@ MonoBehaviour:
     hitboxOffset: {x: -4, y: 4, z: 0}
     damageAmount: 50
   - phaseName: Laser End
-    animations: []
+    animations:
+    - {fileID: 0}
+    - {fileID: 0}
     sound: {fileID: 0}
     phaseDuration: 0.5
     damageInstancePrefab: {fileID: 0}
