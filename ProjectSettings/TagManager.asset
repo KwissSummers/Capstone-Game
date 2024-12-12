@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Vulnerable
+  - EnemyAttack
   layers:
   - Default
   - TransparentFX

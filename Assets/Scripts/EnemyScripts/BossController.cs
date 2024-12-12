@@ -94,18 +94,24 @@ public class BossController : MonoBehaviour
     private void PerformNormalAttack(Ability ability)
     {
         Ability.AbilityPhase phase = ability.phases[0];
-        StartCoroutine(ExecuteAttack(phase.damageInstancePrefab, phase, phase.phaseName));
+        StartAttackCoroutine(phase);
     }
 
     private void PerformHeavyAttack(Ability ability)
     {
         Ability.AbilityPhase phase = ability.phases[1];
-        StartCoroutine(ExecuteAttack(phase.damageInstancePrefab, phase, phase.phaseName));
+        StartAttackCoroutine(phase);
     }
 
     private void PerformRangedAttack(Ability ability)
     {
         Ability.AbilityPhase phase = ability.phases[2];
+        StartAttackCoroutine(phase);
+    }
+
+    private void StartAttackCoroutine(Ability.AbilityPhase phase)
+    {
+        if (phase.damageInstancePrefab == null) return;
         StartCoroutine(ExecuteAttack(phase.damageInstancePrefab, phase, phase.phaseName));
     }
 

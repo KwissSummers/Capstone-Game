@@ -1109,7 +1109,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.974778, y: -5.5145197, z: -10}
+  m_LocalPosition: {x: -14.380541, y: -5.51388, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2307,15 +2307,6 @@ MonoBehaviour:
   walkSpeed: 8
   maxSpeedMultiplier: 1.75
   speedIncreaseTime: 2
-  jumpSpeed: 30
-  fallSpeed: 20
-  maxJumpSteps: 2
-  dashSpeed: 30
-  dashCooldown: 0.5
-  dashDuration: 0.4
-  maxDashes: 2
-  freefallGravScale: 10
-  facingLeft: 0
   rigidBody: {fileID: 1333216835}
   groundCheck: {fileID: 437955389}
   roofCheck: {fileID: 1166377920}

@@ -15,6 +15,7 @@ public class ParryCollider : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         // Check if it's an enemy attack
+
         if (other.CompareTag("EnemyAttack"))
         {
             // Negate the damage (optional logic for negating damage)

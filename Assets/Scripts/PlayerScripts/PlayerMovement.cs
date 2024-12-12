@@ -12,17 +12,17 @@ public class PlayerMovement : MonoBehaviour
     private float currentSpeed; // Current speed based on time walking in the same direction
     private float timeWalkingInDirection = 0f; // Time spent walking in the same direction
 
-    public float jumpSpeed = 18f; // Jump speed
-    public float fallSpeed = 20f; // Maximum fall speed
-    public int maxJumpSteps = 2; // Max number of jumps
-    public float dashSpeed = 20f; // Speed of the dash
-    public float dashCooldown = 0.5f; // Cooldown between dashes
-    public float dashDuration = 0.5f; // Duration of the dash
-    public int maxDashes = 2; // Max number of dashes allowed
-    public float freefallGravScale = 8f;
+    private float jumpSpeed = 18f; // Jump speed
+    private float fallSpeed = 20f; // Maximum fall speed
+    private int maxJumpSteps = 2; // Max number of jumps
+    private float dashSpeed = 20f; // Speed of the dash
+    private float dashCooldown = 0.5f; // Cooldown between dashes
+    private float dashDuration = 0.5f; // Duration of the dash
+    private int maxDashes = 2; // Max number of dashes allowed
+    private float freefallGravScale = 8f;
     private bool isAtMaxHeight; // Whether the player has reached the maximum jump height.
     private bool isJumpingHeld = false; // To track if the player is holding the jump button.
-    public bool facingLeft = false; // Is the player facing left
+    private bool facingLeft = false; // Is the player facing left
 
     [SerializeField] private Rigidbody2D rigidBody;
 
@@ -74,6 +74,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftArrow)) xAxis = -1f;
         else if (Input.GetKey(KeyCode.RightArrow)) xAxis = 1f;
 
+
         // Jump is bound to the Z key
         isJumping = Input.GetKey(KeyCode.Z);
 
@@ -108,7 +109,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-private void HandleMovement()
+    private void HandleMovement()
     {
         if (!isDashing && !recoilingX) // Prevent movement during dashing or recoiling
         {
@@ -146,7 +147,7 @@ private void HandleMovement()
         // Adjust recoil speed and direction based on the attack's recoil
         float recoilXSpeed = 45f;
         float recoilDuration = 0.5f;
-        if (transform.localScale.x < 0) // Facing left
+        if (facingLeft) // Facing left
         {
             rb.velocity = new Vector2(-recoilXSpeed, rb.velocity.y);
         }
@@ -265,6 +266,8 @@ private void HandleMovement()
     }
 
     public bool IsJumping() { return isJumping; }
+
+    public bool IsFacingLeft() { return facingLeft; }
 
     private void SetGravityScale(float scale)
     {

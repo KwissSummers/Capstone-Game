@@ -33,7 +33,7 @@ public class PlayerAttackManager : MonoBehaviour
     private void Update()
     {
         PerformAttack();
-        HandlePlayerFacing(); // Ensure player facing direction is updated
+        //HandlePlayerFacing(); // This is already handled in the PlayerMovement script
     }
 
     private void PerformAttack()
@@ -105,7 +105,7 @@ public class PlayerAttackManager : MonoBehaviour
             if (phase.damageInstancePrefab != null)
             {
                 Vector3 spawnPosition = attackSpawnPos.position +
-                                        new Vector3(phase.hitboxOffset.x * (playerMovement.facingLeft ? -1 : 1),
+                                        new Vector3(phase.hitboxOffset.x * (playerMovement.IsFacingLeft() ? -1 : 1),
                                                     phase.hitboxOffset.y, 0);
                 GameObject damageInstance = Instantiate(phase.damageInstancePrefab, spawnPosition, Quaternion.identity);
 
@@ -114,7 +114,7 @@ public class PlayerAttackManager : MonoBehaviour
                 if (damageManager != null)
                 {
                     damageManager.SetPhase(phase);
-                    damageManager.SetDirection(playerMovement.facingLeft ? Vector3.left : Vector3.right);
+                    damageManager.SetDirection(playerMovement.IsFacingLeft() ? Vector3.left : Vector3.right);
                 }
             }
 
@@ -144,7 +144,7 @@ public class PlayerAttackManager : MonoBehaviour
     private void ApplyRecoil(float damage)
     {
         // Set horizontal recoil direction based on player facing direction
-        recoilDirection = new Vector2(playerMovement.facingLeft ? 0.5f : -0.5f, 0);
+        recoilDirection = new Vector2(playerMovement.IsFacingLeft() ? 0.5f : -0.5f, 0);
 
         // Trigger horizontal recoil
         isRecoilingX = true;
@@ -199,7 +199,7 @@ public class PlayerAttackManager : MonoBehaviour
         staminaManager.UseStamina(parryCost);
 
         // Spawn a parry object
-        Vector3 parryPosition = transform.position + new Vector3(1, 0, 0) * transform.localScale.x;
+        Vector3 parryPosition = transform.position + new Vector3(1, 0, 0) * (playerMovement.IsFacingLeft() ? -1 : 1);
         GameObject parryObject = new GameObject("ParryCollider");
         parryObject.transform.position = parryPosition;
 
@@ -220,16 +220,9 @@ public class PlayerAttackManager : MonoBehaviour
 
     private void ApplyParryRecoil()
     {
-        recoilDirection = new Vector2(transform.localScale.x * -0.5f, 0);
+        recoilDirection = recoilDirection = new Vector3(1, 0, 0) * (playerMovement.IsFacingLeft() ? -1 : 1);
         isRecoilingX = true;
         StartCoroutine(RecoilX());
     }
 
-    private void HandlePlayerFacing()
-    {
-        if (playerMovement.facingLeft != (Input.GetKey(KeyCode.LeftArrow)))
-        {
-            playerMovement.facingLeft = !playerMovement.facingLeft;
-        }
-    }
 }
