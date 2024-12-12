@@ -12,16 +12,14 @@ public class PlayerMovement : MonoBehaviour
     private float currentSpeed; // Current speed based on time walking in the same direction
     private float timeWalkingInDirection = 0f; // Time spent walking in the same direction
 
-    private float jumpSpeed = 18f; // Jump speed
+    private float jumpSpeed = 20f; // Jump speed
     private float fallSpeed = 20f; // Maximum fall speed
     private int maxJumpSteps = 2; // Max number of jumps
-    private float dashSpeed = 20f; // Speed of the dash
+    private float dashSpeed = 30f; // Speed of the dash
     private float dashCooldown = 0.5f; // Cooldown between dashes
-    private float dashDuration = 0.5f; // Duration of the dash
+    private float dashDuration = 0.25f; // Duration of the dash
     private int maxDashes = 2; // Max number of dashes allowed
     private float freefallGravScale = 8f;
-    private bool isAtMaxHeight; // Whether the player has reached the maximum jump height.
-    private bool isJumpingHeld = false; // To track if the player is holding the jump button.
     private bool facingLeft = false; // Is the player facing left
 
     [SerializeField] private Rigidbody2D rigidBody;
@@ -190,7 +188,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (isJumping)
             {
-                SetGravityScale(7f);
+                SetGravityScale(3f);
             }
         }
 

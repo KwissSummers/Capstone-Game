@@ -196,6 +196,13 @@ public class PlayerAttackManager : MonoBehaviour
             return;
         }
 
+        // Trigger invincibility for the player during the parry
+        HealthManager healthManager = GetComponent<HealthManager>();
+        if (healthManager != null)
+        {
+            StartCoroutine(healthManager.TriggerInvincibilityDuringParry());
+        }
+
         staminaManager.UseStamina(parryCost);
 
         // Spawn a parry object
@@ -207,22 +214,25 @@ public class PlayerAttackManager : MonoBehaviour
         BoxCollider2D collider = parryObject.AddComponent<BoxCollider2D>();
         collider.isTrigger = true;
 
-        // Attach ParryCollider to handle collision
+        // Attach the existing ParryCollider script
         ParryCollider parryCollider = parryObject.AddComponent<ParryCollider>();
         parryCollider.SetRecoilDirection(new Vector2(transform.localScale.x * -0.5f, 0));
 
-        // Destroy the parry object after a short duration (0.5f)
+        // Destroy the parry object after a short duration
         Destroy(parryObject, 0.5f);
 
-        ApplyParryRecoil();
         Debug.Log("Parry performed!");
     }
 
-    private void ApplyParryRecoil()
+
+
+
+    public void TriggerParryRecoil(Vector2 direction)
     {
-        recoilDirection = recoilDirection = new Vector3(1, 0, 0) * (playerMovement.IsFacingLeft() ? -1 : 1);
+        recoilDirection = direction; // Use the direction provided by the ParryCollider
         isRecoilingX = true;
         StartCoroutine(RecoilX());
     }
+
 
 }

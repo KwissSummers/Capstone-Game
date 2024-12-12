@@ -9,13 +9,12 @@ public class ParryCollider : MonoBehaviour
 
     private void Awake()
     {
-        playerAttackManager = FindObjectOfType<PlayerAttackManager>();  // Get PlayerAttackManager instance
+        playerAttackManager = FindObjectOfType<PlayerAttackManager>(); // Get PlayerAttackManager instance
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Check if it's an enemy attack
-
+        // Check if the collided object is an enemy attack
         if (other.CompareTag("EnemyAttack"))
         {
             // Negate the damage (optional logic for negating damage)
@@ -25,21 +24,26 @@ public class ParryCollider : MonoBehaviour
                 Debug.Log("Parried an enemy attack! Damage negated.");
 
                 // Apply recoil to the enemy
-                enemyDamageManager.ApplyRecoilToEnemy(new Vector2(transform.localScale.x * -0.5f, 0), 5f);  // You can adjust the recoil force
+                enemyDamageManager.ApplyRecoilToEnemy(recoilDirection, 5f); // Recoil force can be adjusted
+            }
+
+            // Notify PlayerAttackManager to apply parry recoil
+            if (playerAttackManager != null)
+            {
+                playerAttackManager.TriggerParryRecoil(recoilDirection);
             }
 
             // Apply speed reduction to the boss
             BossController bossController = other.GetComponentInParent<BossController>();
             if (bossController != null)
             {
-                bossController.ApplyParrySpeedReduction();  // Call the method to reduce the boss speed
+                bossController.ApplyParrySpeedReduction(); // Call the method to reduce the boss speed
             }
 
             // Destroy the parry object
             Destroy(gameObject);
         }
     }
-
 
     public void SetRecoilDirection(Vector2 direction)
     {

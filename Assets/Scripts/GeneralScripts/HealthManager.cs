@@ -125,4 +125,12 @@ public class HealthManager : MonoBehaviour
         Debug.Log("Player has died!");
         // Destroy(gameObject); // Optionally trigger death animation or respawn logic
     }
+
+    public IEnumerator TriggerInvincibilityDuringParry()
+    {
+        isInvincible = true;  // Enable invincibility
+        yield return new WaitForSeconds(invincibilityTime);  // Keep invincible for the parry duration
+        isInvincible = false;  // Disable invincibility after the duration
+    }
+
 }
