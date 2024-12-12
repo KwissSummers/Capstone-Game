@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerAttackManager : MonoBehaviour
 {
+    private ParryCollider parryCollider;
+
     [Header("Abilities")]
     [SerializeField] private List<Ability> abilityList; // List of all abilities available to the player
 
@@ -28,6 +30,8 @@ public class PlayerAttackManager : MonoBehaviour
     {
         playerMovement = GetComponent<PlayerMovement>();
         staminaManager = GetComponent<StaminaManager>();
+        parryCollider = GetComponentInChildren<ParryCollider>(); // Or reference it directly if instantiated
+ 
     }
 
     private void Update()
@@ -223,9 +227,6 @@ public class PlayerAttackManager : MonoBehaviour
 
         Debug.Log("Parry performed!");
     }
-
-
-
 
     public void TriggerParryRecoil(Vector2 direction)
     {

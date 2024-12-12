@@ -15,7 +15,7 @@ public class ParryCollider : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         // Check if the collided object is an enemy attack
-        if (other.CompareTag("EnemyAttack"))
+        if (other.CompareTag("Vulnerable"))
         {
             // Negate the damage (optional logic for negating damage)
             DamageManager enemyDamageManager = other.GetComponent<DamageManager>();
