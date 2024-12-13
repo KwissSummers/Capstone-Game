@@ -23,11 +23,15 @@ public class HealthManager : MonoBehaviour
     private float healCooldownTimer = 0f; // Timer to track cooldown time
     public bool isHealing = false; // To check if a heal is already in progress
 
+    [Header("Knockback Settings")]
+    [SerializeField] private float knockbackDuration = 0.5f; // Duration of input disable
+    private PlayerMovement playerMovement; // Reference to movement script
     private Rigidbody2D rb;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        playerMovement = GetComponent<PlayerMovement>(); // Cache PlayerMovement reference
         currentHealth = maxHealth;
 
         if (bossController == null)
@@ -81,10 +85,26 @@ public class HealthManager : MonoBehaviour
         currentHealth -= damage;
         Debug.Log($"Player took {damage} damage. Current health: {currentHealth}");
 
-        StartCoroutine(TriggerInvincibility());
+        StartCoroutine(HandleInterruption(knockbackDirection, knockbackForce));
+    }
 
-        rb.velocity = Vector2.zero;
+    private IEnumerator HandleInterruption(Vector2 knockbackDirection, float knockbackForce)
+    {
+        // Temporarily disable player input
+        if (playerMovement != null)
+        {
+            playerMovement.DisableInput(knockbackDuration);
+        }
+
+        // Apply knockback
+        rb.velocity = Vector2.zero; // Reset velocity
         rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+
+        // Wait for the knockback duration
+        yield return new WaitForSeconds(knockbackDuration);
+
+        // Trigger invincibility after knockback
+        StartCoroutine(TriggerInvincibility());
     }
 
     private IEnumerator TriggerInvincibility()
@@ -132,5 +152,4 @@ public class HealthManager : MonoBehaviour
         yield return new WaitForSeconds(invincibilityTime);  // Keep invincible for the parry duration
         isInvincible = false;  // Disable invincibility after the duration
     }
-
 }

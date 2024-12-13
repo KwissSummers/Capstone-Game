@@ -48,6 +48,9 @@ public class PlayerMovement : MonoBehaviour
 
     private float healingTimer = 0f; // To track how long 'D' is held down for healing
 
+    // New input disabling mechanism
+    private bool inputDisabled = false; // Flag to disable all player inputs temporarily
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -57,11 +60,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (inputDisabled) return; // Skip input handling if input is disabled
         GetInputs(); // Input management
     }
 
     private void FixedUpdate()
     {
+        if (inputDisabled) return; // Skip movement updates if input is disabled
         HandleMovement(); // Movement, dashing and jumping updates
     }
 
@@ -71,7 +76,6 @@ public class PlayerMovement : MonoBehaviour
         xAxis = 0f; // Reset horizontal input every frame
         if (Input.GetKey(KeyCode.LeftArrow)) xAxis = -1f;
         else if (Input.GetKey(KeyCode.RightArrow)) xAxis = 1f;
-
 
         // Jump is bound to the Z key
         isJumping = Input.GetKey(KeyCode.Z);
@@ -252,7 +256,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-
     private bool Grounded()
     {
         return Physics2D.Raycast(groundCheck.position, Vector2.down, 0.1f, groundLayer);
@@ -280,5 +283,20 @@ public class PlayerMovement : MonoBehaviour
             wasJumping = false;
         }
     }
-    
+
+    // New method to disable input temporarily
+    public void DisableInput(float duration)
+    {
+        if (!inputDisabled)
+        {
+            StartCoroutine(DisableInputCoroutine(duration));
+        }
+    }
+
+    private IEnumerator DisableInputCoroutine(float duration)
+    {
+        inputDisabled = true;
+        yield return new WaitForSeconds(duration);
+        inputDisabled = false;
+    }
 }
