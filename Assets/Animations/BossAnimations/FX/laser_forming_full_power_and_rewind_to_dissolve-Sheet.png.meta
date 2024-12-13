@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2bdd5999be2e37b4f9e6721e6d1af7dc
+guid: dfff8a1c201f04941a1c66d97f932173
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -97,12 +97,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: special_attack_effect-Sheet_0
+      name: laser_forming_full_power_and_rewind_to_dissolve-Sheet_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 200
+        width: 250
         height: 80
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -111,19 +111,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d8933b8e9a918c047a795c90d8e1e703
-      internalID: -480659082
+      spriteID: d0ee43f69472ca1428a6b41324252d24
+      internalID: -1366667080
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: special_attack_effect-Sheet_1
+      name: laser_forming_full_power_and_rewind_to_dissolve-Sheet_1
       rect:
         serializedVersion: 2
-        x: 200
+        x: 250
         y: 0
-        width: 200
+        width: 250
         height: 80
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -132,19 +132,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5dd89cbd5c7843949a2ad699dac59cb9
-      internalID: 311322724
+      spriteID: d4f84f3cb79347347932da2eeda98c30
+      internalID: 608711687
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: special_attack_effect-Sheet_2
+      name: laser_forming_full_power_and_rewind_to_dissolve-Sheet_2
       rect:
         serializedVersion: 2
-        x: 400
+        x: 500
         y: 0
-        width: 200
+        width: 250
         height: 80
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -153,19 +153,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b790722f52029b843906ad9fbb9968f5
-      internalID: -360563594
+      spriteID: 30fd171a45e698f4497285b5a54fef58
+      internalID: 1666346429
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: special_attack_effect-Sheet_3
+      name: laser_forming_full_power_and_rewind_to_dissolve-Sheet_3
       rect:
         serializedVersion: 2
-        x: 600
+        x: 750
         y: 0
-        width: 200
+        width: 250
         height: 80
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -174,8 +174,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6800f4e25d15b134ea1970919c89093b
-      internalID: 1148511893
+      spriteID: f32bf937b848fb945bd30eb68d7ed631
+      internalID: -962626863
       vertices: []
       indices: 
       edges: []
@@ -191,10 +191,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      special_attack_effect-Sheet_0: -480659082
-      special_attack_effect-Sheet_1: 311322724
-      special_attack_effect-Sheet_2: -360563594
-      special_attack_effect-Sheet_3: 1148511893
+      laser_forming_full_power_and_rewind_to_dissolve-Sheet_0: -1366667080
+      laser_forming_full_power_and_rewind_to_dissolve-Sheet_1: 608711687
+      laser_forming_full_power_and_rewind_to_dissolve-Sheet_2: 1666346429
+      laser_forming_full_power_and_rewind_to_dissolve-Sheet_3: -962626863
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
