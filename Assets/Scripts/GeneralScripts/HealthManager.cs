@@ -10,6 +10,9 @@ public class HealthManager : MonoBehaviour
     [SerializeField] public float maxHealth = 100;
     [SerializeField] public Image healthBar;
 
+    [Header("Animator")]
+    [SerializeField] private Animator animator;
+
     [Header("Boss Health Settings")]
     [SerializeField] public Image bossHealthBar;
     [SerializeField] private BossController bossController;

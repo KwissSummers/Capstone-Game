@@ -6,6 +6,9 @@ public class PlayerAttackManager : MonoBehaviour
 {
     private ParryCollider parryCollider;
 
+    [Header("Animator")]
+    [SerializeField] private Animator animator;
+
     [Header("Abilities")]
     [SerializeField] private List<Ability> abilityList; // List of all abilities available to the player
 

@@ -10,6 +10,10 @@ public class StaminaManager : MonoBehaviour
     [SerializeField] public float staminaRegen = 2.5f; // Amount of stamina regenerated per second
     [SerializeField] public Image staminaBar; // UI stamina bar
 
+
+    [Header("Sweat FX")]
+    [SerializeField] private GameObject sweat;
+
     private void Start()
     {
         stamina = maxStamina; // Initialize stamina to max

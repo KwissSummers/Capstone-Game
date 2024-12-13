@@ -23,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     private bool facingLeft = false; // Is the player facing left
 
     [SerializeField] private Rigidbody2D rigidBody;
+    [SerializeField] private Animator animator;
 
     private float camSmoothSpeed = 0.1f;
     private Vector3 velocity = Vector3.zero;
