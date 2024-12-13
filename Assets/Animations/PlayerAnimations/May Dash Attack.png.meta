@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: May Dash Attack_0
+      name: resume_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 64
-        height: 64
+        width: 22
+        height: 22
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,20 +111,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bd379f74559c7a94a99380cb31179d96
-      internalID: 1763508971
+      spriteID: 6e0f485d6e9a18f47b9d0e8bec58eea6
+      internalID: -1561212707
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: May Dash Attack_1
+      name: resume_1
       rect:
         serializedVersion: 2
-        x: 64
+        x: 22
         y: 0
-        width: 64
-        height: 64
+        width: 22
+        height: 22
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -132,20 +132,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e846e512220967140b9bc2147c248f27
-      internalID: 505210851
+      spriteID: c8a3aa4979b859c46a495d569be42163
+      internalID: -1143658452
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: May Dash Attack_2
+      name: resume_2
       rect:
         serializedVersion: 2
-        x: 128
+        x: 44
         y: 0
-        width: 64
-        height: 64
+        width: 22
+        height: 22
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,50 +153,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e61afd189903b454887073c69f1688eb
-      internalID: -2074744266
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: May Dash Attack_3
-      rect:
-        serializedVersion: 2
-        x: 192
-        y: 0
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: acb8d2963d12d4940a58bb32d039761c
-      internalID: 145564372
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: May Dash Attack_4
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 0
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ec91b99ee0b05e54ea889e9a1edd7e84
-      internalID: 917067487
+      spriteID: a00f843cb9ccb994ab320ea784fbf361
+      internalID: -1219512901
       vertices: []
       indices: 
       edges: []
@@ -212,11 +170,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      May Dash Attack_0: 1763508971
-      May Dash Attack_1: 505210851
-      May Dash Attack_2: -2074744266
-      May Dash Attack_3: 145564372
-      May Dash Attack_4: 917067487
+      resume_0: -1561212707
+      resume_1: -1143658452
+      resume_2: -1219512901
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
