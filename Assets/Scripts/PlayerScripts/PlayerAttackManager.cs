@@ -79,16 +79,10 @@ public class PlayerAttackManager : MonoBehaviour
             UseAbility(3);
         }
 
-        // Upward Slash (X + Up Arrow)
-        if (Input.GetKeyDown(KeyCode.X) && Input.GetKeyDown(KeyCode.UpArrow)) // X + Up Arrow
-        {
-            UseAbility(4);
-        }
-
         // Downward Slash (X + Down Arrow)
         if (Input.GetKeyDown(KeyCode.X) && Input.GetKeyDown(KeyCode.DownArrow)) // X + Down Arrow
         {
-            UseAbility(5);
+            UseAbility(4);
         }
 
         // Parry (Space Bar)
@@ -96,6 +90,13 @@ public class PlayerAttackManager : MonoBehaviour
         {
             PerformParry();
         }
+
+        //unecessary atm
+        /*// Upward Slash (X + Up Arrow)
+        if (Input.GetKeyDown(KeyCode.X) && Input.GetKeyDown(KeyCode.UpArrow)) // X + Up Arrow
+        {
+            UseAbility(4);
+        }*/
     }
 
     private void UseAbility(int index)

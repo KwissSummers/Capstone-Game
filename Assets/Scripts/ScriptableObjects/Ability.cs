@@ -5,7 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "New Ability")]
 public class Ability : ScriptableObject
 {
-    // New Multi-Phase Properties
     [System.Serializable]
     public class AbilityPhase
     {
@@ -20,15 +19,11 @@ public class Ability : ScriptableObject
         public int damageAmount; // Damage specific to this phase
     }
 
-
     public List<AbilityPhase> phases = new List<AbilityPhase>(); // List of all phases in this ability
     public float defaultPhaseDuration = 1f; // Default duration if not specified
-
-    // Cooldown for the entire ability
     public float abilityCooldown = 0.4f; // Cooldown for the ability as a whole
     private float lastUsedTime = -Mathf.Infinity;
 
-    // Method to Execute Ability
     public IEnumerator ExecuteAbility(Transform userTransform)
     {
         if (Time.time < lastUsedTime + abilityCooldown)
@@ -43,42 +38,31 @@ public class Ability : ScriptableObject
         {
             Debug.Log($"Executing Phase: {phase.phaseName}");
 
-            // Trigger multiple animations
-            Animator animator = userTransform.GetComponent<Animator>();
-            if (animator != null && phase.animations.Count > 0)
+            // Play animations
+            if (phase.animations.Count > 0)
             {
                 foreach (var animation in phase.animations)
                 {
-                    if (animation != null)
-                    {
-                        animator.Play(animation.name);
-                    }
+                    PlayAnimation(userTransform, animation);
                 }
             }
-            else
-            {
-                Debug.LogWarning("No animator or animations found for this phase.");
-            }
 
-            // Play Sound
-            if (phase.sound != null)
-            {
-                AudioSource.PlayClipAtPoint(phase.sound, userTransform.position);
-            }
+            // Play sound
+            PlaySound(userTransform, phase.sound);
 
-            // Spawn and Configure Damage Instance
+            // Spawn and configure damage instance
             if (phase.damageInstancePrefab != null)
             {
                 SpawnDamageInstance(userTransform, phase);
             }
 
-            // Wait for the phase duration
-            yield return new WaitForSeconds(phase.phaseDuration > 0 ? phase.phaseDuration : defaultPhaseDuration);
+            // Wait for the phase duration before starting the next phase
+            float duration = phase.phaseDuration > 0 ? phase.phaseDuration : defaultPhaseDuration;
+            yield return new WaitForSeconds(duration);
         }
 
         Debug.Log("Ability execution complete.");
     }
-
 
     // Helper to Play Animation
     private void PlayAnimation(Transform userTransform, AnimationClip animation)
