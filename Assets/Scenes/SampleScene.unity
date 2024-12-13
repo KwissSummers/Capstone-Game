@@ -851,7 +851,6 @@ GameObject:
   - component: {fileID: 448189814}
   - component: {fileID: 448189813}
   - component: {fileID: 448189812}
-  - component: {fileID: 448189811}
   m_Layer: 7
   m_Name: Boss
   m_TagString: Vulnerable
@@ -859,41 +858,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &448189811
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 448189810}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e541bed9e7efa84db6b24e143d3811a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 1000
-  staggerDuration: 3
-  bossSpeed: 5
-  currentHealth: 0
-  isStaggered: 0
-  isShielded: 0
-  abilityList:
-  - {fileID: 11400000, guid: c9c841dfaac74b24388411bc1a0c51ef, type: 2}
-  - {fileID: 11400000, guid: c9c841dfaac74b24388411bc1a0c51ef, type: 2}
-  - {fileID: 11400000, guid: c9c841dfaac74b24388411bc1a0c51ef, type: 2}
-  - {fileID: 11400000, guid: c9c841dfaac74b24388411bc1a0c51ef, type: 2}
-  - {fileID: 11400000, guid: 4ab6cff7cd57e144395e3369d19e8d4c, type: 2}
-  - {fileID: 11400000, guid: c9c841dfaac74b24388411bc1a0c51ef, type: 2}
-  - {fileID: 11400000, guid: c9c841dfaac74b24388411bc1a0c51ef, type: 2}
-  - {fileID: 11400000, guid: 2a799011c476de34eadf99a1baadd0d4, type: 2}
-  - {fileID: 11400000, guid: 1f6b6d0714f763043b2b9dfb0de0efdc, type: 2}
-  - {fileID: 11400000, guid: 1aa623e7091bdca448847309df4afdd8, type: 2}
-  - {fileID: 11400000, guid: b741827e292eb344d8c3eb91ee01eb3f, type: 2}
-  - {fileID: 11400000, guid: c418bfbc992742142807621d71bc5db0, type: 2}
-  - {fileID: 11400000, guid: 4ab6cff7cd57e144395e3369d19e8d4c, type: 2}
-  - {fileID: 11400000, guid: 1f502835922cded4d8e33c09705eb0d3, type: 2}
-  shieldingPrefab: {fileID: 0}
-  attackCooldown: 2
 --- !u!61 &448189812
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2503,7 +2467,7 @@ MonoBehaviour:
   maxHealth: 100
   healthBar: {fileID: 1009561273}
   bossHealthBar: {fileID: 727493559}
-  bossController: {fileID: 448189811}
+  bossController: {fileID: 0}
   invincibilityTime: 0.5
   healCooldown: 0.5
   isHealing: 0
@@ -2520,6 +2484,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilityList:
+  - {fileID: 11400000, guid: a28afc376c089624eb36dbd3cf530cca, type: 2}
+  - {fileID: 11400000, guid: a28afc376c089624eb36dbd3cf530cca, type: 2}
+  - {fileID: 11400000, guid: a28afc376c089624eb36dbd3cf530cca, type: 2}
+  - {fileID: 11400000, guid: a28afc376c089624eb36dbd3cf530cca, type: 2}
+  - {fileID: 11400000, guid: a28afc376c089624eb36dbd3cf530cca, type: 2}
+  - {fileID: 11400000, guid: a28afc376c089624eb36dbd3cf530cca, type: 2}
   - {fileID: 11400000, guid: a28afc376c089624eb36dbd3cf530cca, type: 2}
   recoilXSpeed: 45
   recoilYSpeed: 45
