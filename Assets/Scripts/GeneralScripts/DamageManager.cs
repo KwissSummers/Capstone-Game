@@ -51,7 +51,7 @@ public class DamageManager : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    public void OnCollisionEnter2D(Collision2D other)
     {
         bool isVulnerable = false;
 

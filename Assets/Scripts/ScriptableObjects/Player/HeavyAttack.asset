@@ -10,35 +10,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18231260a9b7d574db4239db82a95f75, type: 3}
-  m_Name: BossHeavy
+  m_Name: HeavyAttack
   m_EditorClassIdentifier: 
   energyBallPrefab: {fileID: 0}
   energyBallSpeed: 10
   energyBallLifetime: 5
   phases:
-  - phaseName: Charge Up
-    animations: []
+  - phaseName: Heavy Charge
+    animations:
+    - {fileID: 0}
     sound: {fileID: 0}
-    phaseDuration: 0
+    phaseDuration: 1.5
     damageInstancePrefab: {fileID: 0}
     hitboxSize: {x: 0, y: 0}
     hitboxOffset: {x: 0, y: 0, z: 0}
     damageAmount: 0
-  - phaseName: Bash Forward
-    animations: []
+  - phaseName: Heavy Impact
+    animations:
+    - {fileID: 0}
     sound: {fileID: 0}
-    phaseDuration: 0
-    damageInstancePrefab: {fileID: 6970181263637035254, guid: f87fad196c168ce4fa4312674102d38b, type: 3}
-    hitboxSize: {x: 0, y: 0}
-    hitboxOffset: {x: 0, y: 0, z: 0}
-    damageAmount: 40
-  - phaseName: Rewind
-    animations: []
-    sound: {fileID: 0}
-    phaseDuration: 0
-    damageInstancePrefab: {fileID: 0}
-    hitboxSize: {x: 0, y: 0}
-    hitboxOffset: {x: 0, y: 0, z: 0}
-    damageAmount: 0
+    phaseDuration: 0.5
+    damageInstancePrefab: {fileID: 6813913808674462319, guid: 3653384c59b2fe74087f172f65fbe654, type: 3}
+    hitboxSize: {x: 6, y: 4}
+    hitboxOffset: {x: 2, y: 0, z: 0}
+    damageAmount: 70
   defaultPhaseDuration: 1
-  abilityCooldown: 10
+  abilityCooldown: 2

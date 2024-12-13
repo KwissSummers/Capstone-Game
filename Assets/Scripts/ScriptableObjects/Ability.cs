@@ -19,6 +19,10 @@ public class Ability : ScriptableObject
         public int damageAmount; // Damage specific to this phase
     }
 
+    public GameObject energyBallPrefab; // The energy ball prefab
+    public float energyBallSpeed = 10f; // Speed at which the energy ball moves
+    public float energyBallLifetime = 5f; // How long the energy ball lasts before disappearing
+
     public List<AbilityPhase> phases = new List<AbilityPhase>(); // List of all phases in this ability
     public float defaultPhaseDuration = 1f; // Default duration if not specified
     public float abilityCooldown = 0.4f; // Cooldown for the ability as a whole
@@ -56,6 +60,12 @@ public class Ability : ScriptableObject
                 SpawnDamageInstance(userTransform, phase);
             }
 
+            // If this phase is the energy ball phase, spawn the energy ball
+            if (phase.damageInstancePrefab == energyBallPrefab)
+            {
+                SpawnEnergyBall(userTransform, phase);
+            }
+
             // Wait for the phase duration before starting the next phase
             float duration = phase.phaseDuration > 0 ? phase.phaseDuration : defaultPhaseDuration;
             yield return new WaitForSeconds(duration);
@@ -90,21 +100,70 @@ public class Ability : ScriptableObject
         }
     }
 
-    // Helper to Spawn Damage Instance
     private void SpawnDamageInstance(Transform userTransform, AbilityPhase phase)
     {
-        Vector3 spawnPosition = userTransform.position + userTransform.right * phase.hitboxOffset.x +
+        // Determine the direction the player is facing
+        Vector3 direction = userTransform.right;  // Default to right-facing direction
+
+        if (userTransform.localScale.x < 0) // If facing left
+        {
+            direction = -userTransform.right;  // Reverse direction
+        }
+
+        // Adjust the spawn position based on the direction
+        Vector3 spawnPosition = userTransform.position + direction * phase.hitboxOffset.x +
                                 userTransform.up * phase.hitboxOffset.y;
+
+        // Instantiate the damage instance prefab
         GameObject instance = Instantiate(phase.damageInstancePrefab, spawnPosition, Quaternion.identity);
 
-        // Configure the hitbox
+        // Set the direction for the damage instance (projectile or other effect)
         DamageManager damageManager = instance.GetComponent<DamageManager>();
         if (damageManager != null)
         {
+            damageManager.SetDirection(direction);  // Pass the correct direction
             damageManager.SetPhase(phase);
             damageManager.SetHitbox(phase.hitboxSize, phase.hitboxOffset);
         }
+        else
+        {
+            Debug.LogError("DamageManager not found on the damage instance prefab.");
+        }
     }
+
+
+
+    private void SpawnEnergyBall(Transform userTransform, AbilityPhase phase)
+    {
+        // Determine the direction the player is facing
+        Vector3 direction = userTransform.right;  // Default to right-facing direction
+
+        // If the player is facing left, reverse the direction
+        if (userTransform.localScale.x < 0)
+        {
+            direction = -userTransform.right;  // Reverse the direction if facing left
+        }
+
+        // Adjust spawn position based on direction
+        Vector3 spawnPosition = userTransform.position + direction * phase.hitboxOffset.x +
+                                userTransform.up * phase.hitboxOffset.y;
+
+        // Instantiate the PlayerProjectile (Energy Ball)
+        GameObject energyBall = Instantiate(energyBallPrefab, spawnPosition, Quaternion.identity);
+
+        // Get the PlayerProjectile component and initialize it
+        PlayerProjectile playerProjectile = energyBall.GetComponent<PlayerProjectile>();
+        if (playerProjectile != null)
+        {
+            // Initialize the energy ball with the direction, speed, and lifetime
+            playerProjectile.Initialize(direction, energyBallSpeed, energyBallLifetime, phase);
+        }
+        else
+        {
+            Debug.LogError("EnergyBall prefab does not have a PlayerProjectile component!");
+        }
+    }
+
 
     // Editor Validation
     private void OnValidate()
@@ -116,14 +175,14 @@ public class Ability : ScriptableObject
 
         foreach (var phase in phases)
         {
-            if (phase.damageInstancePrefab == null)
-            {
-                Debug.LogWarning($"Phase '{phase.phaseName}' in ability '{name}' is missing a damage instance prefab.");
-            }
-            if (phase.phaseDuration <= 0)
-            {
-                Debug.LogWarning($"Phase '{phase.phaseName}' in ability '{name}' has an invalid duration. Using default duration.");
-            }
+        if (phase.damageInstancePrefab == null)
+        {
+            Debug.LogWarning($"Phase '{phase.phaseName}' in ability '{name}' is missing a damage instance prefab.");
         }
+        if (phase.phaseDuration <= 0)
+        {
+            Debug.LogWarning($"Phase '{phase.phaseName}' in ability '{name}' has an invalid duration. Using default duration.");
+        }
+    }
     }
 }
