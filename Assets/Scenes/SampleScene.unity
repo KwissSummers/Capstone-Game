@@ -851,6 +851,7 @@ GameObject:
   - component: {fileID: 448189814}
   - component: {fileID: 448189813}
   - component: {fileID: 448189812}
+  - component: {fileID: 448189816}
   m_Layer: 7
   m_Name: Boss
   m_TagString: Vulnerable
@@ -999,6 +1000,33 @@ Transform:
   - {fileID: 1784632531}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &448189816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 448189810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e541bed9e7efa84db6b24e143d3811a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 1000
+  staggerDuration: 5
+  bossSpeed: 5
+  currentHealth: 0
+  isStaggered: 0
+  isShielded: 0
+  abilityList:
+  - {fileID: 11400000, guid: 2e69327512a6fa04ba79f5f4c1b357b1, type: 2}
+  - {fileID: 11400000, guid: 2a799011c476de34eadf99a1baadd0d4, type: 2}
+  - {fileID: 11400000, guid: 1f6b6d0714f763043b2b9dfb0de0efdc, type: 2}
+  - {fileID: 11400000, guid: b741827e292eb344d8c3eb91ee01eb3f, type: 2}
+  - {fileID: 11400000, guid: 4ab6cff7cd57e144395e3369d19e8d4c, type: 2}
+  - {fileID: 11400000, guid: b9ad7cb1a977e424690b4f47b9c17d25, type: 2}
+  shieldingPrefab: {fileID: 0}
+  attackCooldown: 2
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
