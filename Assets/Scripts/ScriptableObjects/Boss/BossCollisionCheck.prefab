@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4384004509440101922}
   - component: {fileID: 1051575625172490201}
-  - component: {fileID: 3235933059238235672}
   - component: {fileID: 3558917026359868039}
+  - component: {fileID: 3235933059238235672}
   m_Layer: 0
   m_Name: BossCollisionCheck
   m_TagString: Untagged
@@ -69,37 +69,16 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &3235933059238235672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6970181263637035254}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5cf18936eba43a3448eab496ac4053aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentPhase:
-    phaseName: 
-    animations: []
-    sound: {fileID: 0}
-    phaseDuration: 0
-    damageInstancePrefab: {fileID: 0}
-    hitboxSize: {x: 1, y: 1}
-    hitboxOffset: {x: 0, y: 0, z: 0}
-    damageAmount: 0
 --- !u!212 &3558917026359868039
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -141,7 +120,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -149,6 +128,27 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3235933059238235672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6970181263637035254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cf18936eba43a3448eab496ac4053aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentPhase:
+    phaseName: 
+    animations: []
+    sound: {fileID: 0}
+    phaseDuration: 0
+    damageInstancePrefab: {fileID: 0}
+    hitboxSize: {x: 1, y: 1}
+    hitboxOffset: {x: 0, y: 0, z: 0}
+    damageAmount: 0
