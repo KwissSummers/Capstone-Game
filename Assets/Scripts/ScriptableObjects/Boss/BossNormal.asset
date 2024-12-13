@@ -38,4 +38,4 @@ MonoBehaviour:
     hitboxOffset: {x: 1, y: 0, z: 0}
     damageAmount: 15
   defaultPhaseDuration: 1
-  abilityCooldown: 2
+  abilityCooldown: 5
