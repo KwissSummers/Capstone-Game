@@ -17,9 +17,10 @@ public class PlayerAttackManager : MonoBehaviour
     private Vector2 recoilDirection = Vector2.zero; // To store direction of recoil
 
     [Header("Attack Settings")]
-    [SerializeField] private float attackCooldown = 0.4f; // Global cooldown between attacks
-    [SerializeField] private int parryCost = 10; // Stamina cost for parrying
+    [SerializeField] public float attackCooldown = 0.4f; // Global cooldown between attacks
+    [SerializeField] public int parryCost = 10; // Stamina cost for parrying
     [SerializeField] private Transform attackSpawnPos; // Position where attacks are spawned
+    [SerializeField] public float rangedAttackCost = 25;
     private bool isAttacking;
     private float lastAttackTime; // Tracks the time of the last attack
 
@@ -60,7 +61,16 @@ public class PlayerAttackManager : MonoBehaviour
         // Ranged Attack (F)
         if (Input.GetKeyDown(KeyCode.F)) // F key for ranged attack
         {
-            UseAbility(2);
+            if (staminaManager.stamina >= rangedAttackCost) // Check if enough stamina
+            {
+                UseAbility(2); // Perform ranged attack ability
+                staminaManager.UseStamina(rangedAttackCost); // Deduct stamina
+                Debug.Log("Ranged attack performed! Stamina used.");
+            }
+            else
+            {
+                Debug.Log("Not enough stamina for ranged attack.");
+            }
         }
 
         // Dash Attack (C + X)
