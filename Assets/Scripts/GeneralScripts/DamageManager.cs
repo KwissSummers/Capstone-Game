@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DamageManager : MonoBehaviour
 {
-    [SerializeField] private Ability.AbilityPhase currentPhase; // Reference to the current phase of the ability
+    private Ability.AbilityPhase currentPhase; // Reference to the current phase of the ability
     private BoxCollider2D hitbox;
     private Vector3 direction; // Direction of movement
 

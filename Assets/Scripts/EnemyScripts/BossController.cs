@@ -81,42 +81,27 @@ public class BossController : MonoBehaviour
 
         if (playerDistance < 3f)
         {
-            PerformNormalAttack(abilityList[0]);
+            PerformAttack(abilityList[0]);
         }
         else if (playerDistance < 6f)
         {
-            PerformHeavyAttack(abilityList[0]);
+            PerformAttack(abilityList[1]);
         }
         else
         {
-            PerformRangedAttack(abilityList[0]);
+            PerformAttack(abilityList[2]);
         }
     }
 
-    private void PerformNormalAttack(Ability ability)
+    private void PerformAttack(Ability ability)
     {
-        Ability.AbilityPhase phase = ability.phases[0];
-        StartAttackCoroutine(phase);
+        List<Ability.AbilityPhase> phases = ability.phases;
+        foreach (Ability.AbilityPhase phase in phases)
+        {
+            if (phase.damageInstancePrefab == null) return;
+            StartCoroutine(ExecuteAttack(phase.damageInstancePrefab, phase, phase.phaseName));
+        }
     }
-
-    private void PerformHeavyAttack(Ability ability)
-    {
-        Ability.AbilityPhase phase = ability.phases[1];
-        StartAttackCoroutine(phase);
-    }
-
-    private void PerformRangedAttack(Ability ability)
-    {
-        Ability.AbilityPhase phase = ability.phases[2];
-        StartAttackCoroutine(phase);
-    }
-
-    private void StartAttackCoroutine(Ability.AbilityPhase phase)
-    {
-        if (phase.damageInstancePrefab == null) return;
-        StartCoroutine(ExecuteAttack(phase.damageInstancePrefab, phase, phase.phaseName));
-    }
-
 
     private void HandleShield()
     {
@@ -154,16 +139,17 @@ public class BossController : MonoBehaviour
         rb.velocity = Vector2.zero;
 
         // Instantiate the attack prefab
-        Vector3 attackPosition = transform.position + transform.right;
-
+        Vector3 attackPosition = Vector3.zero;
         GameObject attack = null;
-        Vector3 distance = (player.position - transform.position).normalized;
-        if (Vector3.Dot(distance, transform.right.normalized) < 0)
+        Vector3 dir = (player.position - transform.position).normalized;
+        if (Vector3.Dot(dir, transform.right.normalized) < 0)
         {
+            attackPosition = transform.position - transform.right - phase.hitboxOffset;
             attack = Instantiate(attackPrefab, attackPosition, Quaternion.AngleAxis(90, new Vector3(0,0,1)));
         }
         else
         {
+            attackPosition = transform.position + transform.right + phase.hitboxOffset;
             attack = Instantiate(attackPrefab, attackPosition, Quaternion.identity);
         }
 
@@ -248,7 +234,4 @@ public class BossController : MonoBehaviour
         bossSpeed *= 2;  // Restore the speed back to normal
         Debug.Log("Boss speed restored to: " + bossSpeed);
     }
-
-
-
 }
