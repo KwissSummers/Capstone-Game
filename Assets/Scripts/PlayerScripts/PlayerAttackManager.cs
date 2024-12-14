@@ -132,7 +132,10 @@ public class PlayerAttackManager : MonoBehaviour
                 if (damageManager != null)
                 {
                     damageManager.SetPhase(phase);
-                    damageManager.SetDirection(playerMovement.IsFacingLeft() ? Vector3.left : Vector3.right);
+                    Vector3 abilityDirection = playerMovement.IsFacingLeft() ? Vector3.left : Vector3.right;
+                    damageManager.SetDirection(abilityDirection);
+
+                    Debug.Log("direction set");
                 }
             }
 

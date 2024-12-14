@@ -6,7 +6,7 @@ public class DamageManager : MonoBehaviour
 {
     private Ability.AbilityPhase currentPhase; // Reference to the current phase of the ability
     private BoxCollider2D hitbox;
-    private Vector3 direction; // Direction of movement
+    private Vector3 direction = Vector3.right; // Direction of movement
 
     private void Awake()
     {
@@ -23,14 +23,13 @@ public class DamageManager : MonoBehaviour
         {
             // Destroy automatically after the phase duration
             Destroy(gameObject, currentPhase.phaseDuration);
-
-            // Default movement direction
-            direction = transform.right;
         }
         else
         {
             Debug.LogError("DamageManager: Current phase is not set. DamageManager will not function properly.");
         }
+
+        Debug.Log("manager instantiated");
     }
 
     private void Update()

@@ -124,7 +124,7 @@ public class BossController : MonoBehaviour
     {
         foreach (var phase in ability.phases)
         {
-            Debug.Log($"Executing Phase: {phase.phaseName}");
+            //Debug.Log($"Executing Phase: {phase.phaseName}");
 
             if (phase.damageInstancePrefab != null)
             {

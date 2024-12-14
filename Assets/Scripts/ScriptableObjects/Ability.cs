@@ -105,6 +105,8 @@ public class Ability : ScriptableObject
         // Determine the direction the player is facing
         Vector3 direction = userTransform.right;  // Default to right-facing direction
 
+        Debug.Log(direction);
+
         if (userTransform.localScale.x < 0) // If facing left
         {
             direction = -userTransform.right;  // Reverse direction
