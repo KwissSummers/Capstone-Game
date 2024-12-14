@@ -1352,7 +1352,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -15.493266, y: -5.51339, z: -10}
+  m_LocalPosition: {x: -15.494726, y: -5.51339, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1817,7 +1817,7 @@ GameObject:
   - component: {fileID: 744741092}
   - component: {fileID: 744741094}
   - component: {fileID: 744741093}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Layer-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1833,7 +1833,7 @@ Transform:
   m_GameObject: {fileID: 744741091}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0060450677, y: 5.858, z: 0}
+  m_LocalPosition: {x: -3.2395885, y: 5.858, z: 0}
   m_LocalScale: {x: 20, y: 20, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2292,7 +2292,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -2525,7 +2525,7 @@ GameObject:
   - component: {fileID: 1126448200}
   - component: {fileID: 1126448202}
   - component: {fileID: 1126448201}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Layer-0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2541,7 +2541,7 @@ Transform:
   m_GameObject: {fileID: 1126448199}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0040300246, y: -7.745, z: 0}
+  m_LocalPosition: {x: -2.1597254, y: -7.745, z: 0}
   m_LocalScale: {x: 30, y: 30, z: 30}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2729,7 +2729,7 @@ MonoBehaviour:
   speedIncreaseTime: 2
   rigidBody: {fileID: 1333216835}
   animator: {fileID: 421113833}
-  groundCheck: {fileID: 437955389}
+  groundCheck: {fileID: 1068631374}
   roofCheck: {fileID: 1166377920}
   groundLayer:
     serializedVersion: 2
@@ -3454,7 +3454,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -4429,7 +4429,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2125242117}
   - component: {fileID: 2125242116}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
