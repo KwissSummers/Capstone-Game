@@ -1833,7 +1833,7 @@ Transform:
   m_GameObject: {fileID: 744741091}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.2395885, y: 5.858, z: 0}
+  m_LocalPosition: {x: 0.9719742, y: 5.858, z: 0}
   m_LocalScale: {x: 20, y: 20, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2541,7 +2541,7 @@ Transform:
   m_GameObject: {fileID: 1126448199}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.1597254, y: -7.745, z: 0}
+  m_LocalPosition: {x: 0.6479828, y: -7.745, z: 0}
   m_LocalScale: {x: 30, y: 30, z: 30}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2939,8 +2939,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d979afce4edbade44bb496252b6949fa, type: 2}
   - {fileID: 11400000, guid: d5d2e674a0ac55348a52183d7db08209, type: 2}
   - {fileID: 11400000, guid: a71e978891f7bf445bfb0091a85059d6, type: 2}
-  recoilXSpeed: 45
-  recoilYSpeed: 45
+  recoilXSpeed: 20
+  recoilYSpeed: 20
   attackCooldown: 0.5
   parryCost: 10
   attackSpawnPos: {fileID: 1126178330}
