@@ -162,6 +162,7 @@ public class BossController : MonoBehaviour
                 {
                     damageManager.SetPhase(phase);
                     damageManager.SetDirection(player.position.x < transform.position.x ? Vector3.left : Vector3.right);
+                    damageManager.SetHitbox(phase.hitboxSize, phase.hitboxOffset);
                 }
             }
 

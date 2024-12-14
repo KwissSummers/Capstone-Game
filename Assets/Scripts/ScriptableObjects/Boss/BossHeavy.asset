@@ -34,7 +34,7 @@ MonoBehaviour:
     damageInstancePrefab: {fileID: 6340119917401137769, guid: 3223942781457504a968de1afbaca2d0, type: 3}
     requiresMovement: 0
     movementSpeed: 0
-    hitboxSize: {x: 0, y: 0}
+    hitboxSize: {x: 2, y: 10}
     hitboxOffset: {x: 0, y: 0, z: 0}
     damageAmount: 40
   - phaseName: Rewind
