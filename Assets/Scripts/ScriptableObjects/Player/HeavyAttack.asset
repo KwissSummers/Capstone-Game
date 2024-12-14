@@ -20,7 +20,7 @@ MonoBehaviour:
     animations:
     - {fileID: 0}
     sound: {fileID: 0}
-    phaseDuration: 1.5
+    phaseDuration: 0.1
     damageInstancePrefab: {fileID: 0}
     requiresMovement: 0
     movementSpeed: 0
@@ -31,7 +31,7 @@ MonoBehaviour:
     animations:
     - {fileID: 0}
     sound: {fileID: 0}
-    phaseDuration: 0.5
+    phaseDuration: 0.1
     damageInstancePrefab: {fileID: 6340119917401137769, guid: b81fab6eb39f7da4eb1b0eaffb9f6573, type: 3}
     requiresMovement: 0
     movementSpeed: 0
