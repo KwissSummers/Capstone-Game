@@ -1254,14 +1254,8 @@ MonoBehaviour:
   criticalHealthThreshold1: 66
   criticalHealthThreshold2: 33
   isStaggered: 0
-  isShielded: 0
   abilityList:
   - {fileID: 11400000, guid: 2e69327512a6fa04ba79f5f4c1b357b1, type: 2}
-  - {fileID: 11400000, guid: 2a799011c476de34eadf99a1baadd0d4, type: 2}
-  - {fileID: 11400000, guid: 1f6b6d0714f763043b2b9dfb0de0efdc, type: 2}
-  - {fileID: 11400000, guid: b741827e292eb344d8c3eb91ee01eb3f, type: 2}
-  - {fileID: 11400000, guid: 4ab6cff7cd57e144395e3369d19e8d4c, type: 2}
-  shieldingPrefab: {fileID: 0}
   criticalHealthThreshold: 30
   criticalAttackIndex: 4
   attackCooldown: 2
@@ -1374,7 +1368,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -15.494726, y: -5.51339, z: -10}
+  m_LocalPosition: {x: -15.499023, y: -5.5134, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1855,7 +1849,7 @@ Transform:
   m_GameObject: {fileID: 744741091}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.9719742, y: 5.858, z: 0}
+  m_LocalPosition: {x: 0.9681067, y: 5.858, z: 0}
   m_LocalScale: {x: 20, y: 20, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2563,7 +2557,7 @@ Transform:
   m_GameObject: {fileID: 1126448199}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.6479828, y: -7.745, z: 0}
+  m_LocalPosition: {x: 0.6454044, y: -7.745, z: 0}
   m_LocalScale: {x: 30, y: 30, z: 30}
   m_ConstrainProportionsScale: 0
   m_Children: []

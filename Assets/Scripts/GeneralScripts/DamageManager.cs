@@ -70,19 +70,20 @@ public class DamageManager : MonoBehaviour
         {
             if (bossController.CurrentHealth > 0)
             {
-                if (bossController.isShielded)
-                {
-                    Debug.Log("Attack blocked! The boss is shielded.");
-                }
-                else
-                {
-                    bossController.TakeDamage(currentPhase.damageAmount);
+                // Commented out shielding-related logic
+                // if (bossController.isShielded)
+                // {
+                //     Debug.Log("Attack blocked! The boss is shielded.");
+                // }
+                // else
+                // {
+                bossController.TakeDamage(currentPhase.damageAmount);
 
-                    if (isVulnerable && currentPhase.damageAmount >= 50) // Stagger on high damage
-                    {
-                        bossController.TriggerStagger();
-                    }
+                if (isVulnerable && currentPhase.damageAmount >= 50) // Stagger on high damage
+                {
+                    bossController.TriggerStagger();
                 }
+                // }
             }
         }
 
@@ -119,5 +120,4 @@ public class DamageManager : MonoBehaviour
             rb.AddForce(direction * recoilForce, ForceMode2D.Impulse);  // Apply recoil force
         }
     }
-
 }
