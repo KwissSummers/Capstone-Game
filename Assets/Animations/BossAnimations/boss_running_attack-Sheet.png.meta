@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 17c9372cfa1ec8e4ba1b75f145a9ee30
+guid: 5c737ed6551b35d47ae484c9a45eddfe
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: pause_0
+      name: boss_running_attack-Sheet_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 22
-        height: 22
+        width: 100
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,20 +111,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5c23430cf7f24c3488cd7a4f55c74fb4
-      internalID: 1017822147
+      spriteID: aa541e06783834f47b783df53ee0e1ba
+      internalID: -348929987
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pause_1
+      name: boss_running_attack-Sheet_1
       rect:
         serializedVersion: 2
-        x: 22
+        x: 100
         y: 0
-        width: 22
-        height: 22
+        width: 100
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -132,20 +132,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 343ca4b107cb38d44a3a329d23f9388f
-      internalID: -1387259919
+      spriteID: 5e6081fae53118d42b41acef298f0987
+      internalID: -2090615201
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pause_2
+      name: boss_running_attack-Sheet_2
       rect:
         serializedVersion: 2
-        x: 44
+        x: 200
         y: 0
-        width: 22
-        height: 22
+        width: 100
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,8 +153,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 554d41f1416705f478864ba32936389a
-      internalID: -147458852
+      spriteID: cf5b08b241c37be4caaf09c09137fa9d
+      internalID: 201133661
       vertices: []
       indices: 
       edges: []
@@ -170,9 +170,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      pause_0: 1017822147
-      pause_1: -1387259919
-      pause_2: -147458852
+      boss_running_attack-Sheet_0: -348929987
+      boss_running_attack-Sheet_1: -2090615201
+      boss_running_attack-Sheet_2: 201133661
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
