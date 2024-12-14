@@ -147,6 +147,7 @@ public class HealthManager : MonoBehaviour
     {
         Debug.Log("Player has died!");
         // Destroy(gameObject); // Optionally trigger death animation or respawn logic
+        animator.SetTrigger("Defeat");
     }
 
     public IEnumerator TriggerInvincibilityDuringParry()

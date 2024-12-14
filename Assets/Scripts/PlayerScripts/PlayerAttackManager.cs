@@ -52,12 +52,14 @@ public class PlayerAttackManager : MonoBehaviour
         // Basic Attack (X)
         if (Input.GetKeyDown(KeyCode.X)) // X key for basic attack
         {
+            animator.SetTrigger("NormalAttack");
             UseAbility(0);
         }
 
         // Heavy Attack (Hold X)
         if (Input.GetKey(KeyCode.X) && !isAttacking && Time.time > lastAttackTime + attackCooldown)
         {
+            animator.SetTrigger("HeavyAttack");
             StartCoroutine(HeavyAttack());
         }
 
@@ -66,6 +68,7 @@ public class PlayerAttackManager : MonoBehaviour
         {
             if (staminaManager.stamina >= rangedAttackCost) // Check if enough stamina
             {
+                animator.SetTrigger("RangeAttack");
                 UseAbility(2); // Perform ranged attack ability
                 staminaManager.UseStamina(rangedAttackCost); // Deduct stamina
                 Debug.Log("Ranged attack performed! Stamina used.");
@@ -86,11 +89,17 @@ public class PlayerAttackManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.X) && Input.GetKeyDown(KeyCode.DownArrow)) // X + Down Arrow
         {
             UseAbility(4);
+
+            animator.SetTrigger("DownAttack");
+            animator.ResetTrigger("NormalAttack");
+            animator.ResetTrigger("DashAttack");
         }
 
         // Parry (Space Bar)
         if (Input.GetKeyDown(KeyCode.Space)) // Space Bar for parry
         {
+            animator.SetBool("ParrySuccess", false);
+            animator.SetTrigger("Parry");
             PerformParry();
         }
 
@@ -250,6 +259,9 @@ public class PlayerAttackManager : MonoBehaviour
         recoilDirection = direction; // Use the direction provided by the ParryCollider
         isRecoilingX = true;
         StartCoroutine(RecoilX());
+
+        // tell the animator there was a successful parry
+        animator.SetBool("ParrySuccess", true);
     }
 
 

@@ -29,7 +29,7 @@ public class DamageManager : MonoBehaviour
             Debug.LogError("DamageManager: Current phase is not set. DamageManager will not function properly.");
         }
 
-        Debug.Log("manager instantiated");
+        //Debug.Log("manager instantiated");
     }
 
     private void Update()

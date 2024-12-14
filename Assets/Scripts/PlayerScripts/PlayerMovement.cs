@@ -65,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
         GetInputs(); // Input management
 
         // Call animation update logic
-        UpdateAnimationState();
+        animator.SetBool("OnGround", Grounded());
     }
 
 
@@ -79,8 +79,9 @@ public class PlayerMovement : MonoBehaviour
     {
         // Horizontal movement using only left and right arrow keys
         xAxis = 0f; // Reset horizontal input every frame
-        if (Input.GetKey(KeyCode.LeftArrow)) xAxis = -1f;
-        else if (Input.GetKey(KeyCode.RightArrow)) xAxis = 1f;
+        if (Input.GetKey(KeyCode.LeftArrow)) { xAxis = -1f; animator.SetBool("Moving", true); }
+        else if (Input.GetKey(KeyCode.RightArrow)) { xAxis = 1f; animator.SetBool("Moving", true); }
+        else animator.SetBool("Moving", false);
 
         // Jump is bound to the Z key
         isJumping = Input.GetKey(KeyCode.Z);
@@ -89,6 +90,7 @@ public class PlayerMovement : MonoBehaviour
         if (!isDashing && Input.GetKeyDown(KeyCode.C) && dashesRemaining > 0 && dashCooldownTimer <= 0)
         {
             isDashing = true;
+            animator.SetTrigger("Dash");
         }
 
         // Healing triggered by holding 'D' for 1.5 seconds
@@ -99,6 +101,9 @@ public class PlayerMovement : MonoBehaviour
             // Start healing when the timer reaches 1.5 seconds and healing isn't already in progress
             if (healingTimer >= 1.5f)
             {
+                //animation
+                animator.SetTrigger("Heal");
+
                 HealthManager healthManager = GetComponent<HealthManager>();
                 StaminaManager staminaManager = GetComponent<StaminaManager>();
 
@@ -263,12 +268,12 @@ public class PlayerMovement : MonoBehaviour
 
     private bool Grounded()
     {
-        return Physics2D.Raycast(groundCheck.position, Vector2.down, 0.1f, groundLayer);
+        return Physics2D.Raycast(groundCheck.position, Vector2.down, 0.01f, groundLayer);
     }
 
     private bool Roofed()
     {
-        return Physics2D.Raycast(roofCheck.position, Vector2.up, 0.1f, groundLayer);
+        return Physics2D.Raycast(roofCheck.position, Vector2.up, 0.01f, groundLayer);
     }
 
     public bool IsJumping() { return isJumping; }
