@@ -20,7 +20,7 @@ MonoBehaviour:
     animations:
     - {fileID: 0}
     sound: {fileID: 0}
-    phaseDuration: 0.1
+    phaseDuration: 0
     damageInstancePrefab: {fileID: 0}
     requiresMovement: 0
     movementSpeed: 0
@@ -31,12 +31,12 @@ MonoBehaviour:
     animations:
     - {fileID: 0}
     sound: {fileID: 0}
-    phaseDuration: 0.1
+    phaseDuration: 0
     damageInstancePrefab: {fileID: 6340119917401137769, guid: b81fab6eb39f7da4eb1b0eaffb9f6573, type: 3}
     requiresMovement: 0
     movementSpeed: 0
     hitboxSize: {x: 6, y: 4}
     hitboxOffset: {x: 2, y: 0, z: 0}
     damageAmount: 70
-  defaultPhaseDuration: 1
+  defaultPhaseDuration: 0
   abilityCooldown: 2

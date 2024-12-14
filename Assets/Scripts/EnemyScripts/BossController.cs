@@ -30,6 +30,9 @@ public class BossController : MonoBehaviour
     [SerializeField] private float attackCooldown = 2f; // Minimum cooldown between attacks
     private float lastAttackTime;
 
+    [Header("Animator")]
+    [SerializeField] Animator animator;
+
     private Transform player; // Reference to the player
     private Rigidbody2D rb;
 
@@ -38,6 +41,8 @@ public class BossController : MonoBehaviour
         currentHealth = maxHealth;
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.FindWithTag("Player").transform;
+
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -64,6 +69,9 @@ public class BossController : MonoBehaviour
         Vector2 directionToPlayer = (player.position - transform.position).normalized;
         float playerDistance = Vector2.Distance(player.position, transform.position);
 
+        //check if moving
+        bool moving = true;
+
         // Move closer or retreat based on distance thresholds
         if (playerDistance > 5f)
         {
@@ -79,7 +87,10 @@ public class BossController : MonoBehaviour
         {
             // Stop moving when in an acceptable range
             rb.velocity = Vector2.zero;
+            moving = false;
         }
+
+        animator.SetBool("Walking", moving);
 
         // Ensure facing the player
         if (directionToPlayer.x > 0 && transform.localScale.x < 0)
@@ -123,6 +134,7 @@ public class BossController : MonoBehaviour
         // Distance-Based Attacks
         if (playerDistance < 6f)
         {
+            animator.SetTrigger("Attack");
             UseAbility(0); // Normal attack
             UseAbility(1); // Heavy Attack
         }
