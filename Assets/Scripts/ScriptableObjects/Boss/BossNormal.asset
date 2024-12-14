@@ -18,7 +18,7 @@ MonoBehaviour:
   phases:
   - phaseName: First
     animations:
-    - {fileID: 0}
+    - {fileID: 7400000, guid: 5101a414c1322cb488440bbb76007483, type: 2}
     sound: {fileID: 0}
     phaseDuration: 1
     damageInstancePrefab: {fileID: 6970181263637035254, guid: f87fad196c168ce4fa4312674102d38b, type: 3}
@@ -27,7 +27,7 @@ MonoBehaviour:
     damageAmount: 15
   - phaseName: Second
     animations:
-    - {fileID: 0}
+    - {fileID: 7400000, guid: 33b11a75be11f4e4db8e8077f587fc04, type: 2}
     sound: {fileID: 0}
     phaseDuration: 1
     damageInstancePrefab: {fileID: 6970181263637035254, guid: f87fad196c168ce4fa4312674102d38b, type: 3}
@@ -36,7 +36,7 @@ MonoBehaviour:
     damageAmount: 15
   - phaseName: Third
     animations:
-    - {fileID: 0}
+    - {fileID: 7400000, guid: 69eef59c2eec15247ad4896b709ff9c3, type: 2}
     sound: {fileID: 0}
     phaseDuration: 1
     damageInstancePrefab: {fileID: 6970181263637035254, guid: f87fad196c168ce4fa4312674102d38b, type: 3}

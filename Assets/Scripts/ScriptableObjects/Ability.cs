@@ -13,6 +13,8 @@ public class Ability : ScriptableObject
         public AudioClip sound; // Sound for this phase
         public float phaseDuration; // Duration of this phase
         public GameObject damageInstancePrefab; // Damage instance for this phase (optional)
+        public bool requiresMovement; // New: Does this phase require movement?
+        public float movementSpeed; // New: Speed of movement during this phase
 
         public Vector2 hitboxSize = Vector2.one; // Width and height of the hitbox
         public Vector3 hitboxOffset = Vector3.zero; // Offset from the prefab's origin
@@ -28,7 +30,7 @@ public class Ability : ScriptableObject
     public float abilityCooldown = 0.4f; // Cooldown for the ability as a whole
     private float lastUsedTime = -Mathf.Infinity;
 
-    public IEnumerator ExecuteAbility(Transform userTransform)
+    public IEnumerator ExecuteAbility(Transform userTransform, Rigidbody2D rb)
     {
         if (Time.time < lastUsedTime + abilityCooldown)
         {
@@ -54,6 +56,12 @@ public class Ability : ScriptableObject
             // Play sound
             PlaySound(userTransform, phase.sound);
 
+            // Handle movement if required
+            if (phase.requiresMovement)
+            {
+                yield return ExecuteMovementPhase(userTransform, rb, phase);
+            }
+
             // Spawn and configure damage instance
             if (phase.damageInstancePrefab != null)
             {
@@ -72,6 +80,25 @@ public class Ability : ScriptableObject
         }
 
         Debug.Log("Ability execution complete.");
+    }
+
+    // New: Handle movement during a phase
+    private IEnumerator ExecuteMovementPhase(Transform userTransform, Rigidbody2D rb, AbilityPhase phase)
+    {
+        float timer = 0f;
+
+        while (timer < phase.phaseDuration)
+        {
+            // Move in the direction the user is facing
+            Vector2 movementDirection = userTransform.localScale.x > 0 ? Vector2.right : Vector2.left;
+            rb.velocity = movementDirection * phase.movementSpeed;
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        // Stop movement after the phase
+        rb.velocity = Vector2.zero;
     }
 
     // Helper to Play Animation
@@ -102,28 +129,22 @@ public class Ability : ScriptableObject
 
     private void SpawnDamageInstance(Transform userTransform, AbilityPhase phase)
     {
-        // Determine the direction the player is facing
-        Vector3 direction = userTransform.right;  // Default to right-facing direction
-
-        Debug.Log(direction);
+        Vector3 direction = userTransform.right;
 
         if (userTransform.localScale.x < 0) // If facing left
         {
-            direction = -userTransform.right;  // Reverse direction
+            direction = -userTransform.right;
         }
 
-        // Adjust the spawn position based on the direction
         Vector3 spawnPosition = userTransform.position + direction * phase.hitboxOffset.x +
                                 userTransform.up * phase.hitboxOffset.y;
 
-        // Instantiate the damage instance prefab
         GameObject instance = Instantiate(phase.damageInstancePrefab, spawnPosition, Quaternion.identity);
 
-        // Set the direction for the damage instance (projectile or other effect)
         DamageManager damageManager = instance.GetComponent<DamageManager>();
         if (damageManager != null)
         {
-            damageManager.SetDirection(direction);  // Pass the correct direction
+            damageManager.SetDirection(direction);
             damageManager.SetPhase(phase);
             damageManager.SetHitbox(phase.hitboxSize, phase.hitboxOffset);
         }
@@ -133,31 +154,23 @@ public class Ability : ScriptableObject
         }
     }
 
-
-
     private void SpawnEnergyBall(Transform userTransform, AbilityPhase phase)
     {
-        // Determine the direction the player is facing
-        Vector3 direction = userTransform.right;  // Default to right-facing direction
+        Vector3 direction = userTransform.right;
 
-        // If the player is facing left, reverse the direction
         if (userTransform.localScale.x < 0)
         {
-            direction = -userTransform.right;  // Reverse the direction if facing left
+            direction = -userTransform.right;
         }
 
-        // Adjust spawn position based on direction
         Vector3 spawnPosition = userTransform.position + direction * phase.hitboxOffset.x +
                                 userTransform.up * phase.hitboxOffset.y;
 
-        // Instantiate the PlayerProjectile (Energy Ball)
         GameObject energyBall = Instantiate(energyBallPrefab, spawnPosition, Quaternion.identity);
 
-        // Get the PlayerProjectile component and initialize it
         PlayerProjectile playerProjectile = energyBall.GetComponent<PlayerProjectile>();
         if (playerProjectile != null)
         {
-            // Initialize the energy ball with the direction, speed, and lifetime
             playerProjectile.Initialize(direction, energyBallSpeed, energyBallLifetime, phase);
         }
         else
@@ -166,8 +179,6 @@ public class Ability : ScriptableObject
         }
     }
 
-
-    // Editor Validation
     private void OnValidate()
     {
         if (phases.Count == 0)
@@ -177,14 +188,14 @@ public class Ability : ScriptableObject
 
         foreach (var phase in phases)
         {
-        if (phase.damageInstancePrefab == null)
-        {
-            Debug.LogWarning($"Phase '{phase.phaseName}' in ability '{name}' is missing a damage instance prefab.");
+            if (phase.damageInstancePrefab == null)
+            {
+                Debug.LogWarning($"Phase '{phase.phaseName}' in ability '{name}' is missing a damage instance prefab.");
+            }
+            if (phase.phaseDuration <= 0)
+            {
+                Debug.LogWarning($"Phase '{phase.phaseName}' in ability '{name}' has an invalid duration. Using default duration.");
+            }
         }
-        if (phase.phaseDuration <= 0)
-        {
-            Debug.LogWarning($"Phase '{phase.phaseName}' in ability '{name}' has an invalid duration. Using default duration.");
-        }
-    }
     }
 }

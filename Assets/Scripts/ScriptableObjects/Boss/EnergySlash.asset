@@ -12,25 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18231260a9b7d574db4239db82a95f75, type: 3}
   m_Name: EnergySlash
   m_EditorClassIdentifier: 
+  energyBallPrefab: {fileID: 0}
+  energyBallSpeed: 10
+  energyBallLifetime: 5
   phases:
   - phaseName: Charge
-    animations: []
-    sound: {fileID: 0}
-    phaseDuration: 0
-    damageInstancePrefab: {fileID: 0}
-    hitboxSize: {x: 0, y: 0}
-    hitboxOffset: {x: 0, y: 0, z: 0}
-    damageAmount: 0
-  - phaseName: Slash
-    animations: []
-    sound: {fileID: 0}
-    phaseDuration: 0
-    damageInstancePrefab: {fileID: 6970181263637035254, guid: f87fad196c168ce4fa4312674102d38b, type: 3}
-    hitboxSize: {x: 0, y: 0}
-    hitboxOffset: {x: 0, y: 0, z: 0}
-    damageAmount: 50
-  - phaseName: Rewind
-    animations: []
+    animations:
+    - {fileID: 0}
+    - {fileID: 7400000, guid: 2b50d5d89884df74bb258d9d81188223, type: 2}
     sound: {fileID: 0}
     phaseDuration: 0
     damageInstancePrefab: {fileID: 0}

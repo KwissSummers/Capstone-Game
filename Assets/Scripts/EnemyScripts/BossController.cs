@@ -60,22 +60,46 @@ public class BossController : MonoBehaviour
 
     private void TrackPlayer()
     {
+        // Calculate the distance and direction to the player
+        Vector2 directionToPlayer = (player.position - transform.position).normalized;
         float playerDistance = Vector2.Distance(player.position, transform.position);
 
-        // Move closer or retreat based on distance
+        // Move closer or retreat based on distance thresholds
         if (playerDistance > 5f)
         {
-            rb.velocity = new Vector2(bossSpeed, rb.velocity.y);
+            // Move towards the player
+            rb.velocity = new Vector2(directionToPlayer.x * bossSpeed, rb.velocity.y);
         }
         else if (playerDistance < 3f)
         {
-            rb.velocity = new Vector2(-bossSpeed, rb.velocity.y);
+            // Move away from the player
+            rb.velocity = new Vector2(-directionToPlayer.x * bossSpeed, rb.velocity.y);
         }
         else
         {
+            // Stop moving when in an acceptable range
             rb.velocity = Vector2.zero;
         }
+
+        // Ensure facing the player
+        if (directionToPlayer.x > 0 && transform.localScale.x < 0)
+        {
+            Flip();
+        }
+        else if (directionToPlayer.x < 0 && transform.localScale.x > 0)
+        {
+            Flip();
+        }
     }
+
+    // Flips the boss to face the player
+    private void Flip()
+    {
+        Vector3 scale = transform.localScale;
+        scale.x *= -1; // Flip the x-axis
+        transform.localScale = scale;
+    }
+
 
     private void PerformAttackIfNeeded()
     {

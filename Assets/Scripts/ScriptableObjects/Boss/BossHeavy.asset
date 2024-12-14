@@ -17,7 +17,8 @@ MonoBehaviour:
   energyBallLifetime: 5
   phases:
   - phaseName: Charge Up
-    animations: []
+    animations:
+    - {fileID: 0}
     sound: {fileID: 0}
     phaseDuration: 0
     damageInstancePrefab: {fileID: 0}

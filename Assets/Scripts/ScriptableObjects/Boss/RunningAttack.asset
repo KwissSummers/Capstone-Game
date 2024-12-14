@@ -12,30 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18231260a9b7d574db4239db82a95f75, type: 3}
   m_Name: RunningAttack
   m_EditorClassIdentifier: 
+  energyBallPrefab: {fileID: 0}
+  energyBallSpeed: 10
+  energyBallLifetime: 5
   phases:
   - phaseName: Charge
-    animations: []
+    animations:
+    - {fileID: 7400000, guid: 729a6795ef2ac8745a63310578fff7cd, type: 2}
+    - {fileID: 0}
     sound: {fileID: 0}
-    phaseDuration: 0
-    damageInstancePrefab: {fileID: 0}
-    hitboxSize: {x: 0, y: 0}
-    hitboxOffset: {x: 0, y: 0, z: 0}
-    damageAmount: 0
-  - phaseName: Run
-    animations: []
-    sound: {fileID: 0}
-    phaseDuration: 0
+    phaseDuration: 4
     damageInstancePrefab: {fileID: 6970181263637035254, guid: f87fad196c168ce4fa4312674102d38b, type: 3}
-    hitboxSize: {x: 0, y: 0}
-    hitboxOffset: {x: 0, y: 0, z: 0}
-    damageAmount: 20
-  - phaseName: Rewind
-    animations: []
-    sound: {fileID: 0}
-    phaseDuration: 0
-    damageInstancePrefab: {fileID: 0}
-    hitboxSize: {x: 0, y: 0}
-    hitboxOffset: {x: 0, y: 0, z: 0}
+    hitboxSize: {x: 2, y: 4}
+    hitboxOffset: {x: 1, y: 0, z: 0}
     damageAmount: 0
   defaultPhaseDuration: 1
   abilityCooldown: 10

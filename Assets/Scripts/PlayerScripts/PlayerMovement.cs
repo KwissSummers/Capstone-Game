@@ -63,7 +63,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (inputDisabled) return; // Skip input handling if input is disabled
         GetInputs(); // Input management
+
+        // Call animation update logic
+        UpdateAnimationState();
     }
+
 
     private void FixedUpdate()
     {
@@ -300,4 +304,37 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(duration);
         inputDisabled = false;
     }
+
+    private void UpdateAnimationState()
+    {
+        // Handle Idle and Running animations
+        if (!isDashing && Mathf.Abs(xAxis) > 0 && Grounded())
+        {
+            animator.Play("Run");
+        }
+        else if (!isDashing && Grounded())
+        {
+            animator.Play("Idle");
+        }
+
+        // Handle Jumping animations
+        if (!Grounded())
+        {
+            if (rb.velocity.y > 0)
+            {
+                animator.Play("Jump");
+            }
+            else if (rb.velocity.y < 0)
+            {
+                animator.Play("Jump End");
+            }
+        }
+
+        // Handle Dashing animation
+        if (isDashing)
+        {
+            animator.Play("Full Dash");
+        }
+    }
+
 }
