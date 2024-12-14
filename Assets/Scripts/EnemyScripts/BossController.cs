@@ -16,11 +16,11 @@ public class BossController : MonoBehaviour
     [SerializeField] private float criticalHealthThreshold2 = 33f; // Percentage of HP for second critical attack
 
     public bool isStaggered;
-    public bool isShielded;
+    // public bool isShielded; // Commented out shield-related state
 
     [Header("Abilities")]
     [SerializeField] private List<Ability> abilityList; // Ability list for dynamic attacks
-    [SerializeField] private GameObject shieldingPrefab;
+    // [SerializeField] private GameObject shieldingPrefab; // Commented out shield prefab reference
 
     [Header("Health Thresholds")]
     [SerializeField] private float criticalHealthThreshold = 30f; // Percentage of HP for critical attack
@@ -48,11 +48,10 @@ public class BossController : MonoBehaviour
             return;
         }
 
-        if (isShielded)
-        {
-            TriggerShield();
-            return;
-        }
+        // if (isShielded)
+        // {
+        //     return; // Skip further logic if shielded
+        // }
 
         TrackPlayer();
         PerformAttackIfNeeded();
@@ -161,7 +160,6 @@ public class BossController : MonoBehaviour
                 {
                     damageManager.SetPhase(phase);
                     damageManager.SetDirection(player.position.x < transform.position.x ? Vector3.left : Vector3.right);
-                    damageManager.SetHitbox(phase.hitboxSize, phase.hitboxOffset);
                 }
             }
 
@@ -169,36 +167,46 @@ public class BossController : MonoBehaviour
         }
     }
 
+    // private IEnumerator DisableShieldCoroutine() // Commented out shield logic
+    // {
+    //     Debug.Log("DisableShield Coroutine Started");
+    //     SetInvincible(true);
 
-    private IEnumerator DisableShield()
-    {
-        Debug.Log("DisableShield Coroutine Started");
-        SetInvincible(true);
+    //     // Wait for the shield duration
+    //     yield return new WaitForSeconds(5f);
 
-        // Wait for the shield duration
-        yield return new WaitForSeconds(5f);
+    //     SetInvincible(false);
+    //     isShielded = false; // Shield is disabled
+    //     Debug.Log("Shield deactivated!");
+    // }
 
-        SetInvincible(false);
-        isShielded = false; // Shield is disabled
-        Debug.Log("Shield deactivated.");
-    }
+    // public void TriggerShield() // Commented out shield trigger logic
+    // {
+    //     if (isShielded)
+    //     {
+    //         Debug.Log("Shield is already active. Skipping TriggerShield.");
+    //         return; // Prevent re-triggering the shield
+    //     }
 
-    private void PlayShieldAnimation()
-    {
-        // Get the animator and play the shield animation (assuming it's named "RaiseShield")
-        Animator animator = GetComponent<Animator>();
-        if (animator != null)
-        {
-            animator.Play("RaiseShield"); // Replace with your actual shield animation name
-        }
-    }
+    //     isShielded = true;
+    //     Debug.Log("Shield activated!");
+
+    //     // Instantiate the shield prefab
+    //     GameObject shield = Instantiate(shieldingPrefab, transform.position + transform.right, Quaternion.identity);
+
+    //     // Destroy the shield prefab after the shield duration
+    //     Destroy(shield, 5f);
+
+    //     // Start the countdown to disable the shield
+    //     StartCoroutine(DisableShieldCoroutine());
+    // }
 
     private void SetInvincible(bool invincible)
     {
         // Set invincibility flag to prevent or allow damage
-        isShielded = invincible;
+        // Commented out interaction with the shield state
+        // isShielded = invincible;
 
-        // If invincible, prevent damage from being applied
         if (invincible)
         {
             Debug.Log("Boss is now invincible.");
@@ -222,11 +230,12 @@ public class BossController : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (isShielded)
-        {
-            Debug.Log("Boss is shielded. No damage taken."); // Log only once
-            return;
-        }
+        // Commented out shield-related logic
+        // if (isShielded)
+        // {
+        //     Debug.Log("Boss is shielded. No damage taken.");
+        //     return;
+        // }
 
         currentHealth -= damage;
         Debug.Log($"Boss took {damage} damage. Current health: {currentHealth}");
@@ -245,12 +254,12 @@ public class BossController : MonoBehaviour
             TriggerStagger();
         }
 
-        if ((currentHealth <= maxHealth * 0.75f || currentHealth <= maxHealth * 0.25f) && !isShielded)
-        {
-            TriggerShield();
-        }
+        // Commented out shield trigger logic
+        // if ((currentHealth <= maxHealth * 0.75f || currentHealth <= maxHealth * 0.25f) && !isShielded)
+        // {
+        //     TriggerShield();
+        // }
     }
-
 
     public void TriggerStagger()
     {
@@ -260,43 +269,6 @@ public class BossController : MonoBehaviour
             Debug.Log("Boss is staggered!");
         }
     }
-
-    private IEnumerator DisableShieldCoroutine() // Renamed to avoid conflict
-    {
-        Debug.Log("DisableShield Coroutine Started");
-        SetInvincible(true);
-
-        // Wait for the shield duration
-        yield return new WaitForSeconds(5f);
-
-        SetInvincible(false);
-        isShielded = false; // Shield is disabled
-        Debug.Log("Shield deactivated!");
-    }
-
-    public void TriggerShield()
-    {
-        if (isShielded)
-        {
-            Debug.Log("Shield is already active. Skipping TriggerShield.");
-            return; // Prevent re-triggering the shield
-        }
-
-        isShielded = true;
-        Debug.Log("Shield activated!");
-
-        // Instantiate the shield prefab
-        GameObject shield = Instantiate(shieldingPrefab, transform.position + transform.right, Quaternion.identity);
-
-        // Destroy the shield prefab after the shield duration
-        Destroy(shield, 5f);
-
-        // Start the countdown to disable the shield
-        StartCoroutine(DisableShieldCoroutine());
-    }
-
-
-
 
     public void ApplyParrySpeedReduction()
     {
@@ -311,5 +283,4 @@ public class BossController : MonoBehaviour
         bossSpeed *= 2;
         Debug.Log("Boss speed restored to: " + bossSpeed);
     }
-
 }
