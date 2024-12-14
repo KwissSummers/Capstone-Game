@@ -21,7 +21,9 @@ MonoBehaviour:
     - {fileID: 0}
     sound: {fileID: 0}
     phaseDuration: 0.4
-    damageInstancePrefab: {fileID: 6813913808674462319, guid: 3653384c59b2fe74087f172f65fbe654, type: 3}
+    damageInstancePrefab: {fileID: 6340119917401137769, guid: b81fab6eb39f7da4eb1b0eaffb9f6573, type: 3}
+    requiresMovement: 0
+    movementSpeed: 0
     hitboxSize: {x: 4, y: 2}
     hitboxOffset: {x: 2, y: 0, z: 0}
     damageAmount: 20

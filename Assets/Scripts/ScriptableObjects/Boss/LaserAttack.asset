@@ -22,6 +22,8 @@ MonoBehaviour:
     sound: {fileID: 0}
     phaseDuration: 0.5
     damageInstancePrefab: {fileID: 0}
+    requiresMovement: 0
+    movementSpeed: 0
     hitboxSize: {x: 0, y: 0}
     hitboxOffset: {x: 0, y: 0, z: 0}
     damageAmount: 0
@@ -31,6 +33,8 @@ MonoBehaviour:
     sound: {fileID: 0}
     phaseDuration: 2
     damageInstancePrefab: {fileID: 0}
+    requiresMovement: 0
+    movementSpeed: 0
     hitboxSize: {x: 0, y: 0}
     hitboxOffset: {x: 0, y: 0, z: 0}
     damageAmount: 0
@@ -40,7 +44,9 @@ MonoBehaviour:
     - {fileID: 7400000, guid: cd752fe3efcfa5549aae3504f9bb5b67, type: 2}
     sound: {fileID: 0}
     phaseDuration: 1
-    damageInstancePrefab: {fileID: 6970181263637035254, guid: f87fad196c168ce4fa4312674102d38b, type: 3}
+    damageInstancePrefab: {fileID: 6340119917401137769, guid: 3223942781457504a968de1afbaca2d0, type: 3}
+    requiresMovement: 0
+    movementSpeed: 0
     hitboxSize: {x: 20, y: 4}
     hitboxOffset: {x: -4, y: 4, z: 0}
     damageAmount: 50
